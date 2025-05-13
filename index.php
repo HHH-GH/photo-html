@@ -37,8 +37,23 @@ foreach ($requiredConstants as $const) {
 </head>
 <body>
 
-<nav id="top" class="navbar-dark bg-dark p-2">
-    <span class="navbar-brand">Photos to HTML</span>
+<nav id="top" class="navbar-dark bg-dark p-2 navbar-expand">    
+    <div class="" id="navbarSupportedContent">
+        <ul class="navbar-nav">
+            <li class="nav-item">
+                <span class="navbar-brand">Photos to HTML</span>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="../">Back to index</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="print-photo-set/">Print Photo Set</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="make-srcset/">Make Srcset</a>
+            </li>
+        </ul>
+    </div>
 </nav>
 
 <main class="container container-xl">
