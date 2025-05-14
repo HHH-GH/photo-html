@@ -63,19 +63,18 @@ foreach ($requiredConstants as $const) {
         </header>
 
         <section class="card my-5">
-            <div class="card-body">
-                
+            <div class="card-body">                
                 <h2 class="card-title">Make a set of <code>figure</code> tags</h2>
-                <p>You give it a folder location, it loops through all the images in that folder and prints <code>html</code> <code>figure</code> &amp; <code>img</code> tags to copy into your CMS or whatever</p>
-                <a href="./print-photo-set/" class="btn btn-primary">Print Photo Set</a>
+                <p>You give it a folder location, it loops through all the images in that folder and prints <code>figure</code> &amp; <code>img</code> tags to copy into your CMS or whatever</p>
+                <a href="./print-photo-set/" class="btn btn-primary stretched-link">Print Photo Set</a>
             </div>
         </section>
 
         <section class="card my-5">
             <div class="card-body">            
                 <h2 class="card-title">Make a <code>srcset</code></h2>
-                <p>You put some specially named photos into the <code>photos</code> folder, and if you name them right you get a <code>srcset</code> and standalone <code>img</code> tags to copy into a CMS or whatever.</p>        
-                <a href="./make-srcset/" class="btn btn-primary">Make Srcset</a>
+                <p>You put some specially named photos into the <code>./make-srcset/photos</code> folder, and if you name them right you get some <code>srcset</code> and standalone <code>img</code> tags to copy into a CMS or whatever.</p>        
+                <a href="./make-srcset/" class="btn btn-primary stretched-link">Make Srcset</a>
             
             </div>
         </section>
