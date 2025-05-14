@@ -10,6 +10,7 @@ require $envFile;
 // Check required constants are defined and not empty
 $requiredConstants = [
     'BASE_PHOTOS_LOCATION_ABSOLUTE',
+    'BASE_PHOTOS_LOCATION_SERVER',
     'BASE_PHOTOS_LOCATION_PREVIEW_RELATIVE',
     'BASE_PHOTOS_LOCATION_PREVIEW_ABSOLUTE'
 ];
