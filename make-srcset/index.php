@@ -87,7 +87,7 @@ BASENAME_1024x576.jpg</pre>
         <form action="./index.php" method="post">
 
             <label for="photoset_folder" class="form-label">Eventual online folder</label>
-                <div class="input-group mb-3">
+                <div class="input-group mb-3 has-validation">
                 <span class="input-group-text" id="photoset_folder_tip"><?php echo BASE_PHOTOS_LOCATION_ABSOLUTE; ?></span>
                 <input type="text" class="form-control" id="photoset_folder" name="photoset_folder" aria-describedby="photoset_folder_tip" required maxlength="255">
                 <div id="photoset_folder_help" class="form-text">No leading/trailing slash. Where the photos are located e.g. <samp>BadalingAncientGreatWall</samp> if the photos are in <samp><?php echo BASE_PHOTOS_LOCATION_ABSOLUTE; ?>BadalingAncientGreatWall</samp>.</div>
