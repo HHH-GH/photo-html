@@ -64,16 +64,22 @@ foreach ($requiredConstants as $const) {
 
     </div>
 
-    <div class="col-8">
+    <div class="col-8" id="formheader">
         <p>Form goes here</p>
     </div>
 
+    <hr>
+
     <div class="col-6">
-        <p>Photos go here</p>
+        <h2>Photos preview and HTML</h2>
+        <p class="lead">Preview the photos, and then copy the HTML.</p>
     </div>
 
+    <hr>
+
     <div class="col-8">
-        <p>Copy-paste bit goes here</p>
+        <h2>Copy the HTML from here</h2>    
+        <p>Copy-paste form goes here</p>
     </div>
 
     <div class="back-to-top-wrapper">
