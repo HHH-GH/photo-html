@@ -56,7 +56,7 @@ foreach ($requiredConstants as $const) {
 
 <main class="container container-xl">
 
-    <header class="page-header my-5 text-center">
+    <header class="page-header my-5">
 		<h1>Photos to HTMl</h1>
 		<p class="lead">Turn a folder of photos into a set of <code>figure</code> tags or a <code>srcset</code></p>
 	</header>

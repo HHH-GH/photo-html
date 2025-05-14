@@ -55,7 +55,7 @@ foreach ($requiredConstants as $const) {
 
 <main class="container container-xl">
 
-    <header class="page-header my-5 text-center">
+    <header class="page-header my-5">
 		<h1>Print Photo Set</h1>
 		<p class="lead">Fill in the form and submit to generate HTML code for a set of photos.</p>
 	</header>
