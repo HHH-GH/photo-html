@@ -65,7 +65,32 @@ foreach ($requiredConstants as $const) {
     </div>
 
     <div class="col-8" id="formheader">
-        <p>Form goes here</p>
+        
+        <form action="./index.php" method="post" validate>
+
+            <div class="mb-3">
+                <label for="photoset_title" class="form-label">Title of photo set</label>
+                <input type="text" class="form-control" id="photoset_title" aria-describedby="photosetTitleHelp" required maxlength="255">
+                <div id="photosetTitleHelp" class="form-text">e.g. Switchback Great Wall Camping, 2017/10/06</div>
+            </div>
+
+            <div class="mb-3">
+                <label for="photoset_intro" class="form-label">Brief intro of photo set</label>
+                <textarea class="form-control" id="photoset_intro" aria-describedby="photosetIntroHelp" required></textarea>
+                <div id="photosetIntroHelp" class="form-text">A description of what’s in the set of photos e.g. 18 photos from a hike &hellip;</div>
+            </div>
+
+            <label for="photoset_folder" class="form-label">FTP folder name</label>
+                <div class="input-group mb-3">
+                <span class="input-group-text" id="photoset_folder_tip"><?php echo BASE_PHOTOS_LOCATION_ABSOLUTE; ?></span>
+                <input type="text" class="form-control" id="photoset_folder" aria-describedby="photoset_folder_tip" required pattern="^[\d\w\-]*" title="Only letters or numbers or dashes">
+                <div id="photosetFolderHelp" class="form-text">The name of the folder where you uploaded the photos e.g. <samp>20171006-SwitchbackGreatWallCamping</samp></div>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Generate the HTML code</button> <a href="./" class="btn btn-link ms-4">Start again</a>
+
+        </form>
+
     </div>
 
     <hr>
