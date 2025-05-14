@@ -54,13 +54,27 @@ foreach ($requiredConstants as $const) {
 </nav>
 
 <main class="container container-xl">
+    
+    <div class="col-8">
 
-    <header class="page-header my-5">
-		<h1>Print Photo Set</h1>
-		<p class="lead">Fill in the form and submit to generate HTML code for a set of photos.</p>
-	</header>
+        <header class="page-header my-5">
+            <h1>Print Photo Set</h1>
+            <p class="lead">Fill in the form and submit to generate HTML code for a set of photos.</p>
+        </header>
 
-    <p>Form goes here</p>
+    </div>
+
+    <div class="col-8">
+        <p>Form goes here</p>
+    </div>
+
+    <div class="col-6">
+        <p>Photos go here</p>
+    </div>
+
+    <div class="col-8">
+        <p>Copy-paste bit goes here</p>
+    </div>
 
     <div class="back-to-top-wrapper">
         <div class="back-to-top-link-container border border-secondary rounded p-2 bg-light mb-2">
@@ -68,7 +82,7 @@ foreach ($requiredConstants as $const) {
             <a href="#top" class="back-to-top-link btn btn-link text-nowrap" aria-label="Scroll to Top">Back to top</a><br>
         </div>
     </div>
-
+    
 </main>
 
 </body>

@@ -55,33 +55,44 @@ foreach ($requiredConstants as $const) {
 
 <main class="container container-xl">
 
-    <header class="page-header my-5">
-		<h1>Make Srcset</h1>
-		<p class="lead">Fill in the form and submit to generate HTML code for featured image and list image srcsets, as long as the images are named according to the rules.</p>
+    <div class="col-8">
+        <header class="page-header my-5">
+            <h1>Make Srcset</h1>
+            <p class="lead">Fill in the form and submit to generate HTML code for featured image and list image srcsets, as long as the images are named according to the rules.</p>
 
-        <ol class="text-left text-muted">
-			<li>Delete old photos from ./photos</li>
-			<li>Copy the new photos into ./photos, one set at a time</li>
-			<li>Fill form, submit</li>
-			<li>Copy the generated srcsets</li>
-            <li>
-                <details>
-                    <summary>Image naming rules</summary>
-                    <p>Expects six photos, same basename, suffixed with the sizes as below (because that's what I need for my use case).</p>
-                    <pre>
-BASENAME_112x112.jpg
+            <ol class="text-left text-muted">
+                <li>Delete old photos from ./photos</li>
+                <li>Copy the new photos into ./photos, one set at a time</li>
+                <li>Fill form, submit</li>
+                <li>Copy the generated srcsets</li>
+                <li>
+                    <details>
+                        <summary>Image naming rules</summary>
+                        <p>Expects six photos, same basename, suffixed with the sizes as below (because that's what I need for my use case).</p>
+                        <pre class="bg-light p-4">BASENAME_112x112.jpg
 BASENAME_192x128.jpg
 BASENAME_320x215.jpg
 BASENAME_608x344.jpg
 BASENAME_720x405.jpg
-BASENAME_1024x576.jpg
-                    </pre>
-                </details>
-		</ol>
+BASENAME_1024x576.jpg</pre>
+                    </details>
+            </ol>
 
-	</header>
+        </header>
 
-    <p>Form goes here</p>
+    </div>
+
+    <div class="col-8">
+        <p>Form goes here</p>
+    </div>
+
+    <div class="col-6">
+        <p>Photos go here</p>
+    </div>
+
+    <div class="col-8">
+        <p>Copy-paste bit goes here</p>
+    </div>
 
     <div class="back-to-top-wrapper">
         <div class="back-to-top-link-container border border-secondary rounded p-2 bg-light mb-2">

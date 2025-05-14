@@ -56,28 +56,30 @@ foreach ($requiredConstants as $const) {
 
 <main class="container container-xl">
 
-    <header class="page-header my-5">
-		<h1>Photos to HTMl</h1>
-		<p class="lead">Turn a folder of photos into a set of <code>figure</code> tags or a <code>srcset</code></p>
-	</header>
+    <div class="col-8 mx-auto">
+        <header class="page-header my-5">
+            <h1>Photos to HTMl</h1>
+            <p class="lead">Turn a folder of photos into a set of <code>figure</code> tags or a <code>srcset</code></p>
+        </header>
 
-    <section class="card my-5">
-        <div class="card-body">
+        <section class="card my-5">
+            <div class="card-body">
+                
+                <h2 class="card-title">Make a set of <code>figure</code> tags</h2>
+                <p>You give it a folder location, it loops through all the images in that folder and prints <code>html</code> <code>figure</code> &amp; <code>img</code> tags to copy into your CMS or whatever</p>
+                <a href="./print-photo-set/" class="btn btn-primary">Print Photo Set</a>
+            </div>
+        </section>
+
+        <section class="card my-5">
+            <div class="card-body">            
+                <h2 class="card-title">Make a <code>srcset</code></h2>
+                <p>You put some specially named photos into the <code>photos</code> folder, and if you name them right you get a <code>srcset</code> and standalone <code>img</code> tags to copy into a CMS or whatever.</p>        
+                <a href="./make-srcset/" class="btn btn-primary">Make Srcset</a>
             
-            <h2 class="card-title">Make a set of <code>figure</code> tags</h2>
-            <p>You give it a folder location, it loops through all the images in that folder and prints <code>html</code> <code>figure</code> &amp; <code>img</code> tags to copy into your CMS or whatever</p>
-            <a href="./print-photo-set/" class="btn btn-primary">Print Photo Set</a>
-        </div>
-    </section>
-
-    <section class="card my-5">
-        <div class="card-body">            
-            <h2 class="card-title">Make a <code>srcset</code></h2>
-            <p>You put some specially named photos into the <code>photos</code> folder, and if you name them right you get a <code>srcset</code> and standalone <code>img</code> tags to copy into a CMS or whatever.</p>        
-            <a href="./make-srcset/" class="btn btn-primary">Make Srcset</a>
-        
-        </div>
-    </section>
+            </div>
+        </section>
+    </div>
 
     <div class="back-to-top-wrapper">
         <div class="back-to-top-link-container border border-secondary rounded p-2 bg-light mb-2">
