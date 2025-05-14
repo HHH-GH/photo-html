@@ -83,7 +83,32 @@ BASENAME_1024x576.jpg</pre>
     </div>
 
     <div class="col-8" id="formheader">
-        <p>Form goes here</p>
+        
+        <form action="./index.php" method="post" validate>
+
+            <label for="photoset_folder" class="form-label">Eventual online folder</label>
+                <div class="input-group mb-3">
+                <span class="input-group-text" id="photoset_folder_tip"><?php echo BASE_PHOTOS_LOCATION_ABSOLUTE; ?></span>
+                <input type="text" class="form-control" id="photoset_folder" aria-describedby="photoset_folder_tip">
+                <div id="photosetFolderHelp" class="form-text">No leading/trailing slash. Where the photos are located e.g. <samp>BadalingAncientGreatWall</samp> if the photos are in <samp><?php echo BASE_PHOTOS_LOCATION_ABSOLUTE; ?>BadalingAncientGreatWall</samp>.</div>
+            </div>
+
+            <div class="mb-3">
+                <label for="photoset_alt" class="form-label">Photo alt text</label>
+                <input type="text" class="form-control" id="photoset_alt" aria-describedby="photosetAltHelp" required maxlength="255">
+                <div id="photosetAltHelp" class="form-text">e.g. Hikers on the ABC Great Wall.</div>
+            </div>
+
+            <div class="mb-3">
+                <label for="photoset_alt_prefix" class="form-label">Photo alt prefix</label>
+                <input type="text" class="form-control" id="photoset_alt_prefix" aria-describedby="photosetPrefixHelp" required maxlength="255">
+                <div id="photosetPrefixHelp" class="form-text">Usually the name of the hike, for SEO, e.g. Chinese Knot Great Wall.</div>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Generate the HTML code</button> <a href="./" class="btn btn-link ms-4">Start again</a>
+
+        </form>
+        
     </div>
 
     <hr>
