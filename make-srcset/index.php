@@ -151,6 +151,20 @@ BASENAME_1024x576.jpg</pre>
 
         </header>
 
+<?php
+
+// Any messages to print?
+// Were there any errors?
+if( !empty ( $has_errors ) )
+{
+    echo '<div class="alert alert-danger" role="alert">Please check for missing information</div>';
+}
+// No errors and passed validation
+else if( $did_validate === "Y" )
+{
+    echo '<div class="alert alert-success" role="alert">See below for the preview and HTML</div>';
+}
+?>
     </div>
 
     <div class="col-8">
