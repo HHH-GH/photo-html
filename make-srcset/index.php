@@ -68,19 +68,6 @@ $clean_post_data = [
     'photoset_alt_prefix' => '',
 ];
 
-// Version of the img/srcset based on relative file location (for preview, in case the files are not yet on the live site)
-$img_srcset_tags_local = [
-    'featured_img_srcset_tag' => '',
-    'list_img_srcset_tag' => '',
-    'figure_img_tag' => '',
-    '1024_img_tag' => '',
-    '720_img_tag' => '',
-    '608_img_tag' => '',
-    '320_img_tag' => '',
-    '192_img_tag' => '',
-    '112_img_tag' => '',    
-];
-
 // Makes an img/srcset based on live site file location (for actual use)
 $img_srcset_tags_live = [
     'featured_img_srcset_tag' => '',
@@ -196,7 +183,7 @@ BASENAME_1024x576.jpg</pre>
         <?php
             // Print the HTML tags for preview
             $had_tags = "N"; // Write a message if this is still N at the end of the loop
-            foreach ( $img_srcset_tags_local as $tag ) {
+            foreach ( $img_srcset_tags_live as $tag ) {
                 if( !empty($tag) AND $tag !== '' ) {
                     echo $tag . "<br>";
                     $had_tags = "Y";
