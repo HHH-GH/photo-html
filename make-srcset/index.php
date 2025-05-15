@@ -62,13 +62,16 @@ foreach ($requiredConstants as $const) {
  */
 
 // Set up some variables
+
+// Cleaned versions of POST data for printing to the screen
 $clean_post_data = [
     'photoset_folder' => '',
     'photoset_alt' => '',
     'photoset_alt_prefix' => '',
 ];
+$clean_photo_caption = ''; // the same as photoset_alt, but doesn't need the htmlspecialchars when output to screen (htmlspecialchars done when it was cleaned)
 
-// Makes an img/srcset based on live site file location (for actual use)
+// Holds html content for each img/srcset based on live site file location (for actual use)
 $img_srcset_tags_live = [
     'featured_img_srcset_tag' => '',
     'list_img_srcset_tag' => '',
@@ -80,6 +83,11 @@ $img_srcset_tags_live = [
     '192_img_tag' => '',
     '112_img_tag' => '',    
 ];
+
+// Flag some error/success states
+$did_validate = "N"; // Default is didn't pass validation, gets set as Y if $has_errors is empty at the end of the validation process
+$has_errors = []; // If !empty, there were errors in validation
+
 
 ?>
 <!doctype html>
@@ -207,6 +215,111 @@ BASENAME_1024x576.jpg</pre>
     <div class="col-8" id="formheader">
         <h2>Copy the HTML from here</h2>    
         <form id="copy-form">
+
+            <?php
+
+            // Is there a featured image srcset
+            if( !empty( $img_srcset_tags_live['featured_img_srcset_tag'] != '' ) ) {
+                ?>
+                <div class="mb-3">
+                    <label for="srcset_featured" class="form-label">Srcset for Featured Image</label>
+                    <textarea class="form-control" id="srcset_featured" name="srcset_featured"><?php echo htmlspecialchars($img_srcset_tags_live['featured_img_srcset_tag'], ENT_QUOTES, 'UTF-8'); ?></textarea>
+                </div>
+                <?php
+            }
+
+            // Is there a list image srcset
+            if( !empty( $img_srcset_tags_live['list_img_srcset_tag'] != '' ) ) {
+                ?>
+                <div class="mb-3">
+                    <label for="srcset_list" class="form-label">Srcset for List Image</label>
+                    <textarea class="form-control" id="srcset_list" name="srcset_list"><?php echo htmlspecialchars($img_srcset_tags_live['list_img_srcset_tag'], ENT_QUOTES, 'UTF-8'); ?></textarea>
+                </div>
+                <?php
+            }
+
+            // Is there a caption
+            // $clean_photo_caption has already had htmlspecialchars applied
+            if( !empty( $clean_photo_caption != '' ) ) {
+                ?>
+                <div class="mb-3">
+                    <label for="srcset_caption" class="form-label">Caption for photos</label>
+                    <input type="text" class="form-control" id="srcset_caption" name="srcset_caption" value="<?php echo $clean_photo_caption;  ?>">
+                </div>
+                <?php
+            }
+
+            // Is there a 608px image
+            if( !empty( $img_srcset_tags_live['608_img_tag'] != '' ) ) {
+                ?>
+                <div class="mb-3">
+                    <label for="srcset_608" class="form-label">608px image</label>
+                    <textarea class="form-control" id="srcset_608" name="srcset_608"><?php echo htmlspecialchars($img_srcset_tags_live['608_img_tag'], ENT_QUOTES, 'UTF-8'); ?></textarea>
+                </div>
+                <?php
+            }
+
+            // Is there a 192px image
+            if( !empty( $img_srcset_tags_live['192_img_tag'] != '' ) ) {
+                ?>
+                <div class="mb-3">
+                    <label for="srcset_192" class="form-label">192px image</label>
+                    <textarea class="form-control" id="srcset_192" name="srcset_192"><?php echo htmlspecialchars($img_srcset_tags_live['192_img_tag'], ENT_QUOTES, 'UTF-8'); ?></textarea>
+                </div>
+                <?php
+            }
+
+            // Is there a 112px image
+            if( !empty( $img_srcset_tags_live['112_img_tag'] != '' ) ) {
+                ?>
+                <div class="mb-3">
+                    <label for="srcset_112" class="form-label">112px image</label>
+                    <textarea class="form-control" id="srcset_112" name="srcset_112"><?php echo htmlspecialchars($img_srcset_tags_live['112_img_tag'], ENT_QUOTES, 'UTF-8'); ?></textarea>
+                </div>
+                <?php
+            }
+
+            // Is there a 1024px image
+            if( !empty( $img_srcset_tags_live['1024_img_tag'] != '' ) ) {
+                ?>
+                <div class="mb-3">
+                    <label for="srcset_1024" class="form-label">1024px image</label>
+                    <textarea class="form-control" id="srcset_1024" name="srcset_1024"><?php echo htmlspecialchars($img_srcset_tags_live['1024_img_tag'], ENT_QUOTES, 'UTF-8'); ?></textarea>
+                </div>
+                <?php
+            }
+
+            // Is there a 720px image
+            if( !empty( $img_srcset_tags_live['720_img_tag'] != '' ) ) {
+                ?>
+                <div class="mb-3">
+                    <label for="srcset_720" class="form-label">720px image</label>
+                    <textarea class="form-control" id="srcset_720" name="srcset_720"><?php echo htmlspecialchars($img_srcset_tags_live['720_img_tag'], ENT_QUOTES, 'UTF-8'); ?></textarea>
+                </div>
+                <?php
+            }
+
+            // Is there a 320px image
+            if( !empty( $img_srcset_tags_live['320_img_tag'] != '' ) ) {
+                ?>
+                <div class="mb-3">
+                    <label for="srcset_320" class="form-label">320px image</label>
+                    <textarea class="form-control" id="srcset_320" name="srcset_320"><?php echo htmlspecialchars($img_srcset_tags_live['320_img_tag'], ENT_QUOTES, 'UTF-8'); ?></textarea>
+                </div>
+                <?php
+            }
+
+            // Is there a 720 figure image
+            if( !empty( $img_srcset_tags_live['figure_img_tag'] != '' ) ) {
+            ?>
+            <div class="mb-3">
+                <label for="srcset_figure_img" class="form-label">The 720 figure</label>
+                <textarea class="form-control" id="srcset_figure_img" name="srcset_figure_img"><?php echo htmlspecialchars($img_srcset_tags_live['figure_img_tag'], ENT_QUOTES, 'UTF-8'); ?></textarea>
+            </div>
+            <?php
+            }
+
+            ?>
 
         </form>
     </div>
