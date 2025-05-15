@@ -88,7 +88,25 @@ $img_srcset_tags_live = [
 $did_validate = "N"; // Default is didn't pass validation, gets set as Y if $has_errors is empty at the end of the validation process
 $has_errors = []; // If !empty, there were errors in validation
 
+/**
+ * PROCESS THE FORM SUBMISSION
+ * 
+ * 1. Clean and sanitise the POST vars, add to clean_post_data
+ * 2. Validate the data (e.g. not empty, the folder location is readable), set in $has_errors or set $did_validate = "Y"
+ * 3. Build the list of photos
+ * 4. Use the list of photos to create the html tags for the required img and srcset
+ */
 
+if($_SERVER['REQUEST_METHOD'] == "POST") 
+{
+    // 1. Clean and sanitise the POST vars, add to clean_post_data
+
+    // 2. Validate the data (e.g. not empty, the folder location is readable), set in $has_errors or set $did_validate = "Y"
+
+    // 3. Build the list of photos
+
+    // 4. Use the list of photos to create the html tags for the required img and srcset
+}
 ?>
 <!doctype html>
 <html lang="en">
