@@ -9,10 +9,10 @@ require $envFile;
 
 // Check required constants are defined and not empty
 $requiredConstants = [
-    'BASE_PHOTOS_LOCATION_ABSOLUTE',
-    'BASE_PHOTOS_LOCATION_SERVER',
-    'BASE_PHOTOS_LOCATION_PREVIEW_RELATIVE',
-    'BASE_PHOTOS_LOCATION_PREVIEW_ABSOLUTE'
+    'PHOTOS_PUBLIC_BASE_URL',
+    'PHOTOS_PRINT_LOCAL_PATH',
+    'PHOTOS_SRCSET_RELATIVE_PATH',
+    'PHOTOS_SRCSET_ABSOLUTE_PATH'
 ];
 
 foreach ($requiredConstants as $const) {
@@ -83,7 +83,7 @@ foreach ($requiredConstants as $const) {
 
             <label for="photoset_folder" class="form-label">FTP folder name</label>
                 <div class="input-group mb-3 has-validation">
-                <span class="input-group-text" id="photoset_folder_tip"><?php echo BASE_PHOTOS_LOCATION_ABSOLUTE; ?></span>
+                <span class="input-group-text" id="photoset_folder_tip"><?php echo PHOTOS_PUBLIC_BASE_URL; ?></span>
                 <input type="text" class="form-control" id="photoset_folder" name="photoset_folder" aria-describedby="photoset_folder_tip" required pattern="^[\d\w\-]*" title="Only letters or numbers or dashes">
                 <div id="photoset_folder_help" class="form-text">The name of the folder where you uploaded the photos e.g. <samp>20171006-SwitchbackGreatWallCamping</samp></div>
             </div>

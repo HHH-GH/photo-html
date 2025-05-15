@@ -9,10 +9,10 @@ require $envFile;
 
 // Check required constants are defined and not empty
 $requiredConstants = [
-    'BASE_PHOTOS_LOCATION_ABSOLUTE',
-    'BASE_PHOTOS_LOCATION_SERVER',
-    'BASE_PHOTOS_LOCATION_PREVIEW_RELATIVE',
-    'BASE_PHOTOS_LOCATION_PREVIEW_ABSOLUTE'
+    'PHOTOS_PUBLIC_BASE_URL',
+    'PHOTOS_PRINT_LOCAL_PATH',
+    'PHOTOS_SRCSET_RELATIVE_PATH',
+    'PHOTOS_SRCSET_ABSOLUTE_PATH'
 ];
 
 foreach ($requiredConstants as $const) {
@@ -74,7 +74,7 @@ foreach ($requiredConstants as $const) {
         <section class="card my-5">
             <div class="card-body">            
                 <h2 class="card-title">Make a <code>srcset</code></h2>
-                <p>You put some specially named photos into the <code>./make-srcset/photos</code> folder, and if you name them right you get some <code>srcset</code> and standalone <code>img</code> tags to copy into a CMS or whatever.</p>        
+                <p>You put some specially named photos into the <code><?php echo PHOTOS_SRCSET_RELATIVE_PATH; ?></code> folder in the <code>make-srcset</code> folder, and if you name them right you get some <code>srcset</code> and standalone <code>img</code> tags to copy into a CMS or whatever.</p>        
                 <a href="./make-srcset/" class="btn btn-primary stretched-link">Make Srcset</a>
             
             </div>

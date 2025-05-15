@@ -9,10 +9,10 @@ require $envFile;
 
 // Check required constants are defined and not empty
 $requiredConstants = [
-    'BASE_PHOTOS_LOCATION_ABSOLUTE',
-    'BASE_PHOTOS_LOCATION_SERVER',
-    'BASE_PHOTOS_LOCATION_PREVIEW_RELATIVE',
-    'BASE_PHOTOS_LOCATION_PREVIEW_ABSOLUTE'
+    'PHOTOS_PUBLIC_BASE_URL',
+    'PHOTOS_PRINT_LOCAL_PATH',
+    'PHOTOS_SRCSET_RELATIVE_PATH',
+    'PHOTOS_SRCSET_ABSOLUTE_PATH'
 ];
 
 foreach ($requiredConstants as $const) {
@@ -89,9 +89,9 @@ BASENAME_1024x576.jpg</pre>
 
             <label for="photoset_folder" class="form-label">Eventual online folder</label>
                 <div class="input-group mb-3 has-validation">
-                <span class="input-group-text" id="photoset_folder_tip"><?php echo BASE_PHOTOS_LOCATION_ABSOLUTE; ?></span>
+                <span class="input-group-text" id="photoset_folder_tip"><?php echo PHOTOS_PUBLIC_BASE_URL; ?></span>
                 <input type="text" class="form-control" id="photoset_folder" name="photoset_folder" aria-describedby="photoset_folder_tip" required maxlength="255">
-                <div id="photoset_folder_help" class="form-text">No leading/trailing slash. Where the photos are located e.g. <samp>BadalingAncientGreatWall</samp> if the photos are in <samp><?php echo BASE_PHOTOS_LOCATION_ABSOLUTE; ?>BadalingAncientGreatWall</samp>.</div>
+                <div id="photoset_folder_help" class="form-text">No leading/trailing slash. This is where the photos are located e.g. <samp>BadalingAncientGreatWall</samp> if the photos are in <samp><?php echo PHOTOS_PUBLIC_BASE_URL; ?>BadalingAncientGreatWall</samp>.</div>
             </div>
 
             <div class="mb-3">
