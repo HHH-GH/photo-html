@@ -20,6 +20,80 @@ foreach ($requiredConstants as $const) {
         die("Missing or empty config constant: $const");
     }
 }
+
+/**
+ * THE PROGRAM
+ * 
+ * Form submission provides these vars in $_POST
+ * 1. Eventual online folder e.g. it's location at PHOTOS_PUBLIC_BASE_URL, like PHOTOS_PUBLIC_BASE_URL/[foldername]
+ * 2. Photo alt text e.g "Great Wall tower"
+ * 3. Photo alt prefix e.g. "Chinese Knot Great Wall", usually the name of the hike for SEO
+ * 
+ * Validate and clean those variables and add to array $clean_post_data
+ * - $clean_post_data["photoset_folder"], a valid folder name, no exploits
+ * - $clean_post_data["photoset_alt"], text that is okay to use in an html attribute, no exploits
+ * - $clean_post_data["photoset_alt_prefix"], text that is okay to use in an html attribute, no exploits
+ * 
+ * Create a srcset and standalone image tags according to BUSINESS LOGIC
+ * - Read the files in PHOTOS_SRCSET_RELATIVE_PATH and generate HTML img/srcset tags according to BUSINESS LOGIC
+ * - Write the img/srcset tags to the page for preview
+ * - Print each img/srcset tag in a textarea for copy-paste
+ * 
+ * What tags are created out of which files?
+ * - The JPG/GIF/PNG files in PHOTOS_SRCSET_RELATIVE_PATH are suffixed with their dimensions, and should have a common basename
+ * - For the featured image srcset we expect three files suffixed as follows
+ *   - _1024x576.jpg
+ *   - _720x405.jpg
+ *   - _320x215.jpg
+ * - For the list image srcset we expect two files suffixed as follows
+ *   - _720x405.jpg
+ *   - _320x215.jpg
+ * - For the 720px img figure tag, two files
+ *   - _1024x576.jpg
+ *   - _720x405.jpg
+ * - And individual image tags are generated for each of these sizes that are present
+ *   - _1024x576.jpg
+ *   - _720x405.jpg
+ *   - _608x344.jpg
+ *   - _320x215.jpg
+ *   - _192x128.jpg
+ *   - _112x112.jpg
+ * 
+ */
+
+// Set up some variables
+$clean_post_data = [
+    'photoset_folder' => '',
+    'photoset_alt' => '',
+    'photoset_alt_prefix' => '',
+];
+
+// Version of the img/srcset based on relative file location (for preview, in case the files are not yet on the live site)
+$img_srcset_tags_local = [
+    'featured_img_srcset_tag' => '',
+    'list_img_srcset_tag' => '',
+    'figure_img_tag' => '',
+    '1024_img_tag' => '',
+    '720_img_tag' => '',
+    '608_img_tag' => '',
+    '320_img_tag' => '',
+    '192_img_tag' => '',
+    '112_img_tag' => '',    
+];
+
+// Makes an img/srcset based on live site file location (for actual use)
+$img_srcset_tags_live = [
+    'featured_img_srcset_tag' => '',
+    'list_img_srcset_tag' => '',
+    'figure_img_tag' => '',
+    '1024_img_tag' => '',
+    '720_img_tag' => '',
+    '608_img_tag' => '',
+    '320_img_tag' => '',
+    '192_img_tag' => '',
+    '112_img_tag' => '',    
+];
+
 ?>
 <!doctype html>
 <html lang="en">
@@ -115,9 +189,30 @@ BASENAME_1024x576.jpg</pre>
 
     <hr>
 
-    <div class="col-6">
+    <div class="col-10">
         <h2>Photos preview and HTML</h2>
         <p class="lead">Preview the photos, and then copy the HTML.</p>
+
+        <?php
+            // Print the HTML tags for preview
+            $had_tags = "N"; // Write a message if this is still N at the end of the loop
+            foreach ( $img_srcset_tags_local as $tag ) {
+                if( !empty($tag) AND $tag !== '' ) {
+                    echo $tag . "<br>";
+                    $had_tags = "Y";
+                }
+            }
+            
+            // Write a message if there were no HTML tags to preview
+            if( $had_tags === 'N') {
+                ?>
+                <div class="alert alert-warning" role="alert">
+                    No image tags to print. (Yet?)
+                </div>
+                <?php
+            }
+
+        ?>
     </div>
 
     <hr>
