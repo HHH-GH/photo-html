@@ -145,7 +145,7 @@ BASENAME_1024x576.jpg</pre>
 
     </div>
 
-    <div class="col-8" id="formheader">
+    <div class="col-8">
         
         <form action="./index.php" method="post">
 
@@ -204,9 +204,11 @@ BASENAME_1024x576.jpg</pre>
 
     <hr>
 
-    <div class="col-8">
+    <div class="col-8" id="formheader">
         <h2>Copy the HTML from here</h2>    
-        <p>Copy-paste form goes here</p>
+        <form id="copy-form">
+
+        </form>
     </div>
 
     <div class="back-to-top-wrapper">
@@ -218,5 +220,11 @@ BASENAME_1024x576.jpg</pre>
 
 </main>
 
+<script>
+// Prevent form submission copy-form on Enter keypress or button click
+document.getElementById('copy-form').addEventListener('submit', e => {
+  e.preventDefault();
+});
+</script>
 </body>
 </html>
