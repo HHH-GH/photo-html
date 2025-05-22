@@ -69,7 +69,7 @@ $clean_post_data = [
     'photoset_alt' => '',
     'photoset_alt_prefix' => '',
 ];
-$clean_photo_caption = ''; // the same as photoset_alt, but doesn't need the htmlspecialchars when output to screen (htmlspecialchars done when it was cleaned)
+$clean_photo_caption = ''; // the same as photoset_alt, but doesn't need the htmlspecialchars when output to screen (htmlspecialchars done when it was cleaned) TODO: use if needed
 
 // Holds html content for each img/srcset based on live site file location (for actual use)
 $img_srcset_tags_live = [
@@ -88,6 +88,9 @@ $img_srcset_tags_live = [
 $did_validate = "N"; // Default is didn't pass validation, gets set as Y if $has_errors is empty at the end of the validation process
 $has_errors = []; // If !empty, there were errors in validation
 
+// Alt / Alt prefix separator
+$img_alt_prefix_separator = "|";
+
 /**
  * PROCESS THE FORM SUBMISSION
  * 
@@ -99,13 +102,29 @@ $has_errors = []; // If !empty, there were errors in validation
 
 if($_SERVER['REQUEST_METHOD'] == "POST") 
 {
-    // 1. Clean and sanitise the POST vars, add to clean_post_data
+    // 1. Clean and sanitise the POST vars, add to $clean_post_data
+
+    // What data is expected from POST
+    /**
+     * 'photoset_folder'        string with characters that are valid for a folder name i.e. numbers, letters, underscores, hyphens - other things are stripped
+     * 'photoset_alt'           string with characters that are valid for a html attribute tag
+     * 'photoset_alt_prefix'    string with characters that are valid for a html attribute tag
+     */
+
+    // string with characters that are valid for a folder name i.e. numbers, letters, underscores, hyphens - other things are stripped
+    $clean_post_data['photoset_folder'] = preg_replace('/[^a-zA-Z0-9_\-]/', '', $_POST['photoset_folder'] ?? '');
+
+    // string with characters that are valid for a html attribute tag
+    // ENT_QUOTES | ENT_SUBSTITUTE "ensures quotes are safely encoded and handles invalid UTF-8 by subsituting replacement characters"
+    $clean_post_data['photoset_alt'] = trim( htmlspecialchars( strip_tags( $_POST['photoset_alt'] ?? '' ), ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8' ) );
+    $clean_post_data['photoset_alt_prefix'] = trim( htmlspecialchars( strip_tags( $_POST['photoset_alt_prefix'] ?? '' ), ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8' ) );
 
     // 2. Validate the data (e.g. not empty, the folder location is readable), set in $has_errors or set $did_validate = "Y"
 
     // 3. Build the list of photos
 
     // 4. Use the list of photos to create the html tags for the required img and srcset
+    
 }
 ?>
 <!doctype html>
@@ -192,19 +211,19 @@ else if( $did_validate === "Y" )
             <label for="photoset_folder" class="form-label">Eventual online folder</label>
                 <div class="input-group mb-3 has-validation">
                 <span class="input-group-text" id="photoset_folder_tip"><?php echo PHOTOS_PUBLIC_BASE_URL; ?></span>
-                <input type="text" class="form-control" id="photoset_folder" name="photoset_folder" aria-describedby="photoset_folder_tip" required maxlength="255">
+                <input type="text" class="form-control" id="photoset_folder" name="photoset_folder" aria-describedby="photoset_folder_tip" required maxlength="255" value="<?php echo $clean_post_data['photoset_folder']; ?>">
                 <div id="photoset_folder_help" class="form-text">No leading/trailing slash. This is where the photos are located e.g. <samp>BadalingAncientGreatWall</samp> if the photos are in <samp><?php echo PHOTOS_PUBLIC_BASE_URL; ?>BadalingAncientGreatWall</samp>.</div>
             </div>
 
             <div class="mb-3">
                 <label for="photoset_alt" class="form-label">Photo alt text</label>
-                <input type="text" class="form-control" id="photoset_alt" name="photoset_alt" aria-describedby="photoset_alt_help" required maxlength="255">
+                <input type="text" class="form-control" id="photoset_alt" name="photoset_alt" aria-describedby="photoset_alt_help" required maxlength="255" value="<?php echo $clean_post_data['photoset_alt']; ?>">
                 <div id="photoset_alt_help" class="form-text">e.g. Hikers on the ABC Great Wall.</div>
             </div>
 
             <div class="mb-3">
                 <label for="photoset_alt_prefix" class="form-label">Photo alt prefix</label>
-                <input type="text" class="form-control" id="photoset_alt_prefix" name="photoset_alt_prefix" aria-describedby="photoset_prefix_help" required maxlength="255">
+                <input type="text" class="form-control" id="photoset_alt_prefix" name="photoset_alt_prefix" aria-describedby="photoset_prefix_help" required maxlength="255"  value="<?php echo $clean_post_data['photoset_alt_prefix']; ?>">
                 <div id="photoset_prefix_help" class="form-text">Usually the name of the hike, for SEO, e.g. Chinese Knot Great Wall.</div>
             </div>
 
