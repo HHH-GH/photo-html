@@ -84,6 +84,9 @@ $img_srcset_tags_live = [
     '112_img_tag' => '',    
 ];
 
+// Hold the list of photos
+$photos_list = [];
+
 // Flag some error/success states
 $did_validate = "N"; // Default is didn't pass validation, gets set as Y if $has_errors is empty at the end of the validation process
 $has_errors = []; // If !empty, there were errors in validation
@@ -122,7 +125,54 @@ if($_SERVER['REQUEST_METHOD'] == "POST")
 
     // 2. Validate the data (e.g. not empty, the folder location is readable), set in $has_errors or set $did_validate = "Y"
 
-    // 3. Build the list of photos
+    // 2a. Photoset folder variable is not empty
+    $clean_post_data['photoset_folder'] = '';
+    if( empty( $clean_post_data['photoset_folder']) )
+    {
+        $has_errors['photoset_folder'] = "Photo folder location is required.";
+        $did_validate = "N";
+    }
+
+    // 2b. Photoset alt is not empty
+    $clean_post_data['photoset_alt'] = '';
+    if( empty( $clean_post_data['photoset_alt']) )
+    {
+        $has_errors['photoset_alt'] = "Photo alt text is required.";
+        $did_validate = "N";
+    }
+
+    // 2c. The photos folder exists and we can open it, a trailing slash is assumed
+    if (!is_dir(PHOTOS_SRCSET_RELATIVE_PATH) || !is_readable(PHOTOS_SRCSET_RELATIVE_PATH)) {
+        $has_errors['photoset_dir'] = "The <code>PHOTOS_SRCSET_RELATIVE_PATH</code> set in <code>env.php</code> location was not found or was not readable.";
+        $did_validate = "N";
+    } else {
+        
+        try {
+            foreach (new DirectoryIterator(PHOTOS_SRCSET_RELATIVE_PATH) as $fileInfo) {
+                // Get jpgs, pngs, gifs only
+                if (
+                    $fileInfo->isFile() &&
+                    preg_match('/\.(jpe?g|gif|png)$/i', $fileInfo->getFilename())
+                ) {
+                    $photos_list[] = $fileInfo->getFilename();
+                }
+            }
+    
+            sort($photos_list); // Sort the photos list alphabetically            
+    
+        } catch (UnexpectedValueException $e) {
+            $has_errors['photoset_dir'] = "Failed to read <code>PHOTOS_SRCSET_RELATIVE_PATH</code>: " . htmlspecialchars($e->getMessage(), ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+            $did_validate = "N";
+        }
+    }
+
+    // 2d. We were able to build the list of photos
+    if( empty($photos_list) )
+    {
+        $has_errors['photoset_dir'] = "No photos were found in the <code>PHOTOS_SRCSET_RELATIVE_PATH</code> location set in <code>env.php</code>";
+        $did_validate = "N";
+    }
+
 
     // 4. Use the list of photos to create the html tags for the required img and srcset
     
@@ -193,14 +243,24 @@ BASENAME_1024x576.jpg</pre>
 
 // Any messages to print?
 // Were there any errors?
+
+// Fields failed validation
 if( !empty ( $has_errors ) )
 {
-    echo '<div class="alert alert-danger" role="alert">Please check for missing information</div>';
+    echo '<div class="alert alert-danger mb-4" role="alert">Please check for missing information</div>';
 }
+
+// Couldn't read the PHOTOS_SRCSET_RELATIVE_PATH folder
+if( !empty ($has_errors['photoset_dir']) ){
+    echo '<div class="alert alert-danger mb-4" role="alert">'.$has_errors['photoset_dir'].'</div>';
+}
+
+
+
 // No errors and passed validation
 else if( $did_validate === "Y" )
 {
-    echo '<div class="alert alert-success" role="alert">See below for the preview and HTML</div>';
+    echo '<div class="alert alert-success mb-3" role="alert">See below for the preview and HTML</div>';
 }
 ?>
     </div>
@@ -209,21 +269,39 @@ else if( $did_validate === "Y" )
         
         <form action="./index.php" method="post">
 
-            <label for="photoset_folder" class="form-label">Eventual online folder</label>
+            <label for="photoset_folder" class="form-label">Eventual online folder (required)</label>
                 <div class="input-group mb-3 has-validation">
                 <span class="input-group-text" id="photoset_folder_tip"><?php echo PHOTOS_PUBLIC_BASE_URL; ?></span>
-                <input type="text" class="form-control" id="photoset_folder" name="photoset_folder" aria-describedby="photoset_folder_tip" required maxlength="255" value="<?php echo $clean_post_data['photoset_folder']; ?>">
+                <input type="text" class="form-control<?php
+				if( !empty ($has_errors['photoset_folder']) ){
+					echo " is-invalid";
+				}
+				?>" id="photoset_folder" name="photoset_folder" aria-describedby="photoset_folder_tip" required maxlength="255" value="<?php echo $clean_post_data['photoset_folder']; ?>">
+                <?php
+				if( !empty ($has_errors['photoset_folder']) ){
+					echo '<div class="invalid-feedback">'.$has_errors['photoset_folder'].'</div>';
+				}
+				?>                
                 <div id="photoset_folder_help" class="form-text">No leading/trailing slash. This is where the photos are located e.g. <samp>BadalingAncientGreatWall</samp> if the photos are in <samp><?php echo PHOTOS_PUBLIC_BASE_URL; ?>BadalingAncientGreatWall</samp>.</div>
             </div>
 
             <div class="mb-3">
-                <label for="photoset_alt" class="form-label">Photo alt text</label>
-                <input type="text" class="form-control" id="photoset_alt" name="photoset_alt" aria-describedby="photoset_alt_help" required maxlength="255" value="<?php echo $clean_post_data['photoset_alt']; ?>">
+                <label for="photoset_alt" class="form-label">Photo alt text (required)</label>
+                <input type="text" class="form-control<?php
+				if( !empty ($has_errors['photoset_alt']) ){
+					echo " is-invalid";
+				}
+				?>" id="photoset_alt" name="photoset_alt" aria-describedby="photoset_alt_help" required maxlength="255" value="<?php echo $clean_post_data['photoset_alt']; ?>">
+                <?php
+				if( !empty ($has_errors['photoset_alt']) ){
+					echo '<div class="invalid-feedback">'.$has_errors['photoset_alt'].'</div>';
+				}
+				?> 
                 <div id="photoset_alt_help" class="form-text">e.g. Hikers on the ABC Great Wall.</div>
             </div>
 
             <div class="mb-3">
-                <label for="photoset_alt_prefix" class="form-label">Photo alt prefix</label>
+                <label for="photoset_alt_prefix" class="form-label">Photo alt prefix (optional)</label>
                 <input type="text" class="form-control" id="photoset_alt_prefix" name="photoset_alt_prefix" aria-describedby="photoset_prefix_help" maxlength="255"  value="<?php echo $clean_post_data['photoset_alt_prefix']; ?>">
                 <div id="photoset_prefix_help" class="form-text">Usually the name of the hike, for SEO, e.g. Chinese Knot Great Wall.</div>
             </div>
