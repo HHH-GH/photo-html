@@ -119,6 +119,7 @@ if($_SERVER['REQUEST_METHOD'] == "POST")
     $clean_post_data['photoset_alt'] = trim( htmlspecialchars( strip_tags( $_POST['photoset_alt'] ?? '' ), ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8' ) );
     $clean_post_data['photoset_alt_prefix'] = trim( htmlspecialchars( strip_tags( $_POST['photoset_alt_prefix'] ?? '' ), ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8' ) );
 
+
     // 2. Validate the data (e.g. not empty, the folder location is readable), set in $has_errors or set $did_validate = "Y"
 
     // 3. Build the list of photos
@@ -223,7 +224,7 @@ else if( $did_validate === "Y" )
 
             <div class="mb-3">
                 <label for="photoset_alt_prefix" class="form-label">Photo alt prefix</label>
-                <input type="text" class="form-control" id="photoset_alt_prefix" name="photoset_alt_prefix" aria-describedby="photoset_prefix_help" required maxlength="255"  value="<?php echo $clean_post_data['photoset_alt_prefix']; ?>">
+                <input type="text" class="form-control" id="photoset_alt_prefix" name="photoset_alt_prefix" aria-describedby="photoset_prefix_help" maxlength="255"  value="<?php echo $clean_post_data['photoset_alt_prefix']; ?>">
                 <div id="photoset_prefix_help" class="form-text">Usually the name of the hike, for SEO, e.g. Chinese Knot Great Wall.</div>
             </div>
 
