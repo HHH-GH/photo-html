@@ -84,6 +84,12 @@ $img_srcset_tags_live = [
     '112_img_tag' => '',    
 ];
 
+$img_srcset_tag_srcs = [
+    '1024_src' => '',
+    '720_src' => '',
+    '320_src' => '',
+];
+
 // Hold the list of photos
 $photos_list = [];
 
@@ -92,7 +98,7 @@ $did_validate = "N"; // Default is didn't pass validation, gets set as Y if $has
 $has_errors = []; // If !empty, there were errors in validation
 
 // Alt / Alt prefix separator
-$img_alt_prefix_separator = "|";
+define("IMG_ALT_PREFIX_SEPARATOR", " | ");
 
 /**
  * PROCESS THE FORM SUBMISSION
@@ -126,14 +132,14 @@ if($_SERVER['REQUEST_METHOD'] == "POST")
     // 2. Validate the data (e.g. not empty, the folder location is readable), set in $has_errors or set $did_validate = "Y"
 
     // 2a. Photoset folder variable is not empty
-    if( empty( $clean_post_data['photoset_folder']) )
+    if( empty( $clean_post_data['photoset_folder'] ) )
     {
         $has_errors['photoset_folder'] = "Photo folder location is required.";
         $did_validate = "N";
     }
 
     // 2b. Photoset alt is not empty
-    if( empty( $clean_post_data['photoset_alt']) )
+    if( empty( $clean_post_data['photoset_alt'] ) )
     {
         $has_errors['photoset_alt'] = "Photo alt text is required.";
         $did_validate = "N";
@@ -189,6 +195,138 @@ if($_SERVER['REQUEST_METHOD'] == "POST")
 
     // 4. Use the list of photos to create the html tags for the required img and srcset
     echo '<pre>'.print_r($photos_list,TRUE).'</pre>';
+
+    /**  
+     * What do we want?
+     * A standalone image tag for each of the allowed sizes, with `class="img"` added for legacy images
+     * - linking to the location in `PHOTOS_PUBLIC_BASE_URL/$clean_post_data['photoset_folder']/`
+     * - with width, height, and an alt tag made out of $clean_post_data['photoset_alt'] (and $clean_post_data['photoset_alt_prefix'], if present)
+     * The src attribute for the 1024 and 720 and 320px sizes, linking to the location in `PHOTOS_PUBLIC_BASE_URL/$clean_post_data['photoset_folder']/`
+     * to use in a srcset
+     * 
+     */
+
+    /*
+$img_srcset_tags_live = [
+    'featured_img_srcset_tag' => '',
+    'list_img_srcset_tag' => '',
+    'figure_img_tag' => '',
+    '1024_img_tag' => '',
+    '720_img_tag' => '',
+    '608_img_tag' => '',
+    '320_img_tag' => '',
+    '192_img_tag' => '',
+    '112_img_tag' => '',    
+];
+
+$img_srcset_tag_srcs = [
+    '1024_src' => '',
+    '720_src' => '',
+    '320_src' => '',
+];
+
+    */
+
+    $image_template = '<img src="%s" alt="%s" width="%d" height="%d"%s>';
+    $image_alt = $clean_post_data['photoset_alt'];
+    $image_alt_plus_prefix = !empty( $clean_post_data['photoset_alt_prefix'] ) ? $clean_post_data['photoset_alt_prefix'].IMG_ALT_PREFIX_SEPARATOR.$clean_post_data['photoset_alt'] : $clean_post_data['photoset_alt'];
+    foreach( $photos_list as $image ) 
+    {
+        // 1024 image
+        if( strpos( $image['filename'], '_1024x576' ) !== FALSE )
+        {
+            // The standalone image
+            $img_srcset_tags_live['1024_img_tag'] = sprintf(
+                $image_template,
+                PHOTOS_PUBLIC_BASE_URL.$clean_post_data['photoset_folder'].'/'.$image['filename'],
+                $image_alt_plus_prefix,
+                $image['width'],
+                $image['height'],
+                '' // No class added
+            );
+
+            // The src attribute
+            $img_srcset_tag_srcs['1024'] = PHOTOS_PUBLIC_BASE_URL.$clean_post_data['photoset_folder'].'/'.$image['filename'];
+            
+        }
+
+        // 720 image
+        if( strpos( $image['filename'], '_720x405' ) !== FALSE )
+        {
+            // The standalone image
+            $img_srcset_tags_live['720_img_tag'] = sprintf(
+                $image_template,
+                PHOTOS_PUBLIC_BASE_URL.$clean_post_data['photoset_folder'].'/'.$image['filename'],
+                $image_alt,
+                $image['width'],
+                $image['height'],
+                '' // No class added
+            );
+
+            // The src attribute
+            $img_srcset_tag_srcs['720'] = PHOTOS_PUBLIC_BASE_URL.$clean_post_data['photoset_folder'].'/'.$image['filename'];
+        }
+
+        // 608 image
+        if( strpos( $image['filename'], '_608x344' ) !== FALSE )
+        {
+            // The standalone image
+            $img_srcset_tags_live['608_img_tag'] = sprintf(
+                $image_template,
+                PHOTOS_PUBLIC_BASE_URL.$clean_post_data['photoset_folder'].'/'.$image['filename'],
+                $image_alt_plus_prefix,
+                $image['width'],
+                $image['height'],
+                ' class="img"' // Class added to legacy sizes
+            );
+
+        }
+
+        // 320 image
+        if( strpos( $image['filename'], '_320x215' ) !== FALSE )
+        {
+            // The standalone image
+            $img_srcset_tags_live['320_img_tag'] = sprintf(
+                $image_template,
+                PHOTOS_PUBLIC_BASE_URL.$clean_post_data['photoset_folder'].'/'.$image['filename'],
+                $image_alt,
+                $image['width'],
+                $image['height'],
+                '' // No class added
+            );
+
+            // The src attribute
+            $img_srcset_tag_srcs['320'] = PHOTOS_PUBLIC_BASE_URL.$clean_post_data['photoset_folder'].'/'.$image['filename'];
+        }
+
+        // 192 image
+        if( strpos( $image['filename'], '_192x128' ) !== FALSE )
+        {
+            // The standalone image
+            $img_srcset_tags_live['192_img_tag'] = sprintf(
+                $image_template,
+                PHOTOS_PUBLIC_BASE_URL.$clean_post_data['photoset_folder'].'/'.$image['filename'],
+                $image_alt,
+                $image['width'],
+                $image['height'],
+                ' class="img"' // Class added to legacy sizes
+            );
+        }
+
+        // 112 image
+        if( strpos( $image['filename'], '_112x112' ) !== FALSE )
+        {
+            // The standalone image
+            $img_srcset_tags_live['112_img_tag'] = sprintf(
+                $image_template,
+                PHOTOS_PUBLIC_BASE_URL.$clean_post_data['photoset_folder'].'/'.$image['filename'],
+                $image_alt,
+                $image['width'],
+                $image['height'],
+                ' class="img"' // Class added to legacy sizes
+            );
+        }
+    }
 
     
 }
