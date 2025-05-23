@@ -126,7 +126,6 @@ if($_SERVER['REQUEST_METHOD'] == "POST")
     // 2. Validate the data (e.g. not empty, the folder location is readable), set in $has_errors or set $did_validate = "Y"
 
     // 2a. Photoset folder variable is not empty
-    $clean_post_data['photoset_folder'] = '';
     if( empty( $clean_post_data['photoset_folder']) )
     {
         $has_errors['photoset_folder'] = "Photo folder location is required.";
@@ -134,7 +133,6 @@ if($_SERVER['REQUEST_METHOD'] == "POST")
     }
 
     // 2b. Photoset alt is not empty
-    $clean_post_data['photoset_alt'] = '';
     if( empty( $clean_post_data['photoset_alt']) )
     {
         $has_errors['photoset_alt'] = "Photo alt text is required.";
