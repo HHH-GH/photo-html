@@ -159,11 +159,20 @@ if($_SERVER['REQUEST_METHOD'] == "POST")
                     $fileInfo->isFile() &&
                     preg_match('/\.(jpe?g|gif|png)$/i', $fileInfo->getFilename())
                 ) {
-                    $photos_list[] = $fileInfo->getFilename();
+                    $filePath = $fileInfo->getPathname();
+                    $size = @getimagesize($filePath);
+
+                    if ($size !== false) {
+                        $photos_list[] = [
+                            'filename' => $fileInfo->getFilename(),
+                            'width'    => $size[0],
+                            'height'   => $size[1],
+                        ];
+                    }
                 }
             }
     
-            sort($photos_list); // Sort the photos list alphabetically            
+            sort($photos_list); // Sort the photos list alphabetically TO-DO: this isn't actually needed       
     
         } catch (UnexpectedValueException $e) {
             $has_errors['photoset_dir'] = "Failed to read <code>PHOTOS_SRCSET_RELATIVE_PATH</code>: " . htmlspecialchars($e->getMessage(), ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
@@ -179,6 +188,8 @@ if($_SERVER['REQUEST_METHOD'] == "POST")
     }
 
     // 4. Use the list of photos to create the html tags for the required img and srcset
+    echo '<pre>'.print_r($photos_list,TRUE).'</pre>';
+
     
 }
 ?>
