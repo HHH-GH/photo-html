@@ -138,6 +138,13 @@ if($_SERVER['REQUEST_METHOD'] == "POST")
         $has_errors['photoset_alt'] = "Photo alt text is required.";
         $did_validate = "N";
     }
+    else{
+        // Strip a trailing period for the alt
+        $clean_post_data['photoset_alt'] = rtrim( $clean_post_data['photoset_alt'], '.' );
+
+        // Add a trailing period back for the caption
+        $clean_photo_caption = $clean_post_data['photoset_alt'].'.';
+    }
 
     // 2c. The photos folder exists and we can open it, a trailing slash is assumed
     if (!is_dir(PHOTOS_SRCSET_RELATIVE_PATH) || !is_readable(PHOTOS_SRCSET_RELATIVE_PATH)) {
@@ -170,7 +177,6 @@ if($_SERVER['REQUEST_METHOD'] == "POST")
         $has_errors['photoset_dir'] = "No photos were found in the <code>PHOTOS_SRCSET_RELATIVE_PATH</code> location set in <code>env.php</code>";
         $did_validate = "N";
     }
-
 
     // 4. Use the list of photos to create the html tags for the required img and srcset
     
