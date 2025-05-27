@@ -69,7 +69,7 @@ $clean_post_data = [
     'photoset_alt' => '',
     'photoset_alt_prefix' => '',
 ];
-$clean_photo_caption = ''; // the same as photoset_alt, but doesn't need the htmlspecialchars when output to screen (htmlspecialchars done when it was cleaned) TODO: use if needed
+$clean_photo_caption = ''; // the same as photoset_alt, but doesn't need the htmlspecialchars when output to screen (htmlspecialchars done when it was cleaned) 
 
 // Holds html content for each img/srcset based on live site file location (for actual use)
 $img_srcset_tags_live = [
@@ -177,9 +177,7 @@ if($_SERVER['REQUEST_METHOD'] == "POST")
                         ];
                     }
                 }
-            }
-    
-            sort($photos_list); // Sort the photos list alphabetically TO-DO: this isn't actually needed       
+            }   
     
         } catch (UnexpectedValueException $e) {
             $has_errors['photoset_dir'] = "Failed to read <code>PHOTOS_SRCSET_RELATIVE_PATH</code>: " . htmlspecialchars($e->getMessage(), ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
