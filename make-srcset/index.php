@@ -195,7 +195,6 @@ if($_SERVER['REQUEST_METHOD'] == "POST")
     }
 
     // 4. Use the list of photos to create the html tags for the required img and srcset
-    echo '<pre>'.print_r($photos_list,TRUE).'</pre>';
 
     /**  
      * What do we want?
