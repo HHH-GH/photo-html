@@ -206,30 +206,10 @@ if($_SERVER['REQUEST_METHOD'] == "POST")
      * 
      */
 
-    /*
-$img_srcset_tags_live = [
-    'featured_img_srcset_tag' => '',
-    'list_img_srcset_tag' => '',
-    'figure_img_tag' => '',
-    '1024_img_tag' => '',
-    '720_img_tag' => '',
-    '608_img_tag' => '',
-    '320_img_tag' => '',
-    '192_img_tag' => '',
-    '112_img_tag' => '',    
-];
-
-$img_srcset_tag_srcs = [
-    '1024_src' => '',
-    '720_src' => '',
-    '320_src' => '',
-];
-
-    */
-
     $image_template = '<img src="%s" alt="%s" width="%d" height="%d"%s>';
     $image_alt = $clean_post_data['photoset_alt'];
     $image_alt_plus_prefix = !empty( $clean_post_data['photoset_alt_prefix'] ) ? $clean_post_data['photoset_alt_prefix'].IMG_ALT_PREFIX_SEPARATOR.$clean_post_data['photoset_alt'] : $clean_post_data['photoset_alt'];
+
     foreach( $photos_list as $image ) 
     {
         // 1024 image
@@ -246,7 +226,7 @@ $img_srcset_tag_srcs = [
             );
 
             // The src attribute
-            $img_srcset_tag_srcs['1024'] = PHOTOS_PUBLIC_BASE_URL.$clean_post_data['photoset_folder'].'/'.$image['filename'];
+            $img_srcset_tag_srcs['1024_src'] = PHOTOS_PUBLIC_BASE_URL.$clean_post_data['photoset_folder'].'/'.$image['filename'];
             
         }
 
@@ -264,7 +244,7 @@ $img_srcset_tag_srcs = [
             );
 
             // The src attribute
-            $img_srcset_tag_srcs['720'] = PHOTOS_PUBLIC_BASE_URL.$clean_post_data['photoset_folder'].'/'.$image['filename'];
+            $img_srcset_tag_srcs['720_src'] = PHOTOS_PUBLIC_BASE_URL.$clean_post_data['photoset_folder'].'/'.$image['filename'];
         }
 
         // 608 image
@@ -296,7 +276,7 @@ $img_srcset_tag_srcs = [
             );
 
             // The src attribute
-            $img_srcset_tag_srcs['320'] = PHOTOS_PUBLIC_BASE_URL.$clean_post_data['photoset_folder'].'/'.$image['filename'];
+            $img_srcset_tag_srcs['320_src'] = PHOTOS_PUBLIC_BASE_URL.$clean_post_data['photoset_folder'].'/'.$image['filename'];
         }
 
         // 192 image
@@ -328,6 +308,48 @@ $img_srcset_tag_srcs = [
         }
     }
 
+    // Can we make up any of the srcset images?
+    // Featured image srcset
+    // - needs 1024, 720, 320 images
+    // - defaults to showing the largest image in src
+    // - 1024x576 aspect ratio set
+    // - sizes="100vw" so the browser picks the largest one that fits the screensize at page load
+    $featured_image_srcset_template = '<img src="%s" width="1024" height="576" srcset="%s 1024w, %s 720w, %s 320w" sizes="100w" alt="%s">';
+    if(
+        !empty( $img_srcset_tag_srcs['1024_src'] )
+        AND !empty( $img_srcset_tag_srcs['720_src'] )
+        AND !empty( $img_srcset_tag_srcs['320_src'] )
+    )
+    {
+        $img_srcset_tags_live['featured_img_srcset_tag'] = sprintf(
+            $featured_image_srcset_template,
+            $img_srcset_tag_srcs['1024_src'],
+            $img_srcset_tag_srcs['1024_src'],
+            $img_srcset_tag_srcs['720_src'],
+            $img_srcset_tag_srcs['320_src'],
+            $image_alt_plus_prefix
+        );
+    }
+
+    // List image srcset
+    // - needs 720, 320 images
+    // - defaults to showing the 320 image in src (assuming thumbnail in list page view, large screen)
+    // - 320x215 aspect ratio set
+    // - sizes: 592px is where the list page view changes to a card with the image at the top, use the 720px image but shrink to fit 592px or lower
+    $list_image_srcset_template = '<img src="%s" width="320" height="215" srcset="%s 720w, %s 320w" sizes="(min-width: 592px) 320px, 100vw" alt="%s">';
+    if(
+        !empty( $img_srcset_tag_srcs['720_src'] )
+        AND !empty( $img_srcset_tag_srcs['320_src'] )
+    )
+    {
+        $img_srcset_tags_live['list_img_srcset_tag'] = sprintf(
+            $list_image_srcset_template,
+            $img_srcset_tag_srcs['320_src'],
+            $img_srcset_tag_srcs['720_src'],
+            $img_srcset_tag_srcs['320_src'],
+            $image_alt
+        );
+    }
     
 }
 ?>
