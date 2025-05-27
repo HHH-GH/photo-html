@@ -144,7 +144,8 @@ if($_SERVER['REQUEST_METHOD'] == "POST")
         $has_errors['photoset_alt'] = "Photo alt text is required.";
         $did_validate = "N";
     }
-    else{
+    else
+    {
         // Strip a trailing period for the alt
         $clean_post_data['photoset_alt'] = rtrim( $clean_post_data['photoset_alt'], '.' );
 
@@ -308,6 +309,7 @@ if($_SERVER['REQUEST_METHOD'] == "POST")
         }
     }
 
+
     // Can we make up any of the srcset images?
     // Featured image srcset
     // - needs 1024, 720, 320 images
@@ -350,7 +352,30 @@ if($_SERVER['REQUEST_METHOD'] == "POST")
             $image_alt
         );
     }
-    
+
+
+    // Can we make the figure image?
+    // Needs the 720 image tag and the src for the 1024 image
+    // Produces:
+    // - a figure tag and caption ...
+    // - with the 720px image wrapped in a link to the 1024 image ...
+    // - and the caption wrapped in a link to the 1024 image ...
+    // - with a rel="lytebox" attribute on the links that is picked up by JavaScript for a lightbox effect on click.
+    $figure_720_template = '<figure>'."\n\t<a href=".'"%s" rel="lytebox">'."\n\t\t%s\n\t</a>\n\t<figcaption>%s (<a href=".'"%s" rel="lytebox">'."Click for larger image</a>)</figcaption>\n</figure>";
+    if(
+        !empty( $img_srcset_tags_live['720_img_tag'] )
+        AND !empty( $img_srcset_tag_srcs['1024_src'] )
+    )
+    {
+        $img_srcset_tags_live['figure_img_tag'] = sprintf(
+            $figure_720_template,
+            $img_srcset_tag_srcs['1024_src'],
+            $img_srcset_tags_live['720_img_tag'],
+            $clean_photo_caption,
+            $img_srcset_tag_srcs['1024_src']
+        );
+    }
+
 }
 ?>
 <!doctype html>
