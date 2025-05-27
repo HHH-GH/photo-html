@@ -422,7 +422,7 @@ if($_SERVER['REQUEST_METHOD'] == "POST")
                 <li>Delete any old photos from <samp><?php echo PHOTOS_SRCSET_RELATIVE_PATH; ?></samp></li>
                 <li>Copy the new photos into <samp><?php echo PHOTOS_SRCSET_RELATIVE_PATH; ?></samp>, one set at a time</li>
                 <li>Fill form, submit</li>
-                <li>Copy the generated srcsets</li>
+                <li>Copy the generated image tags into the CMS fields</li>
                 <li>
                     <details>
                         <summary>Image naming rules</summary>
