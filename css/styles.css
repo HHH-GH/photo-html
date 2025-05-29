@@ -23,7 +23,13 @@
     display: inline-block;
   }
 
-  /* textarea in forms are tall enough to fit their content */
-  textarea {
-     field-sizing: content; /* https://caniuse.com/?search=field-sizing | it's fine because I use Chrome for this app
-  }
+ /* textarea in forms are tall enough to fit their content */
+ textarea {
+   field-sizing: content; /* https://caniuse.com/?search=field-sizing | it's fine because I use Chrome for this app */
+}
+
+/* Images are responsive */
+img {
+   max-width: 100%;
+   height: auto;
+}
