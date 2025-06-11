@@ -20,6 +20,85 @@ foreach ($requiredConstants as $const) {
         die("Missing or empty config constant: $const");
     }
 }
+
+
+/**
+ * THE PROGRAM
+ * 
+ * Form submission provides these vars in $_POST
+ * 1. Photo set title 'photoset_title' e.g. "Gubeikou Great Wall, 2025/06/07"
+ * 2. Photo set brief intro 'photoset_intro' e.g. "18 photos from a hike at the Gubeikou Great Wall 
+ * 3. Online folder location 'photoset_folder' e.g. it's location at PHOTOS_PUBLIC_BASE_URL, like PHOTOS_PUBLIC_BASE_URL/[foldername]
+ * 
+ * Validate and clean those variables and add to array $clean_post_data
+ * - $clean_post_data["photoset_title"], text that is okay to use in an html attribute or print to the screen, no exploits
+ * - $clean_post_data["photoset_intro"], text that is okay to use in an html attribute or print to the screen, no exploits
+ * - $clean_post_data["photoset_folder"], a valid folder name, no exploits
+ * 
+ * Create srcsets and standalone image tags according to BUSINESS LOGIC
+ * - Read the files in PHOTOS_SRCSET_RELATIVE_PATH/[foldername] and generate HTML img/srcset tags according to BUSINESS LOGIC
+ * - Write the img/srcset tags to the page for preview
+ * - Print each img/srcset tag in a textarea for copy-paste
+ * 
+ * What tags are created out of which files?
+ * - For the featured image srcset we expect three files suffixed as follows
+ *   - _1024x576.jpg
+ *   - _720x405.jpg
+ *   - _320x215.jpg
+ * - For the list image srcset we expect two files suffixed as follows
+ *   - _720x405.jpg
+ *   - _320x215.jpg
+ * - Individual individual image tags are generated for each of these sizes that are present
+ *   - _1024x576.jpg
+ *   - _720x405.jpg
+ *   - _608x344.jpg
+ *   - _320x215.jpg
+ *   - _192x128.jpg
+ *   - _112x112.jpg
+ * - And then all the JPG/PNG/GIF files that are not suffixed as above are turned into a group of figures with image tags 
+ */
+
+// Set up some variables
+
+// Cleaned versions of POST data for printing to the screen
+$clean_post_data = [
+    'photoset_title' => '',
+    'photoset_intro' => '',
+    'photoset_folder' => '',
+];
+
+// Holds html content for each img/srcset based on live site file location (for actual use)
+$img_srcset_tags_live = [
+    'featured_img_srcset_tag' => '',
+    'list_img_srcset_tag' => '',
+    'figure_img_tag' => '',
+    '1024_img_tag' => '',
+    '720_img_tag' => '',
+    '608_img_tag' => '',
+    '320_img_tag' => '',
+    '192_img_tag' => '',
+    '112_img_tag' => '',    
+];
+
+$img_srcset_tag_srcs = [
+    '1024_src' => '',
+    '720_src' => '',
+    '320_src' => '',
+];
+
+// Hold the list of photos
+$photos_list = [];
+
+// Hold the group of figure tags
+$photo_set_figures = [];
+
+// Flag some error/success states
+$did_validate = "N"; // Default is didn't pass validation, gets set as Y if $has_errors is empty at the end of the validation process
+$has_errors = []; // If !empty, there were errors in validation
+
+
+
+
 ?>
 <!doctype html>
 <html lang="en">
