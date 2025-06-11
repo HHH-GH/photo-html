@@ -148,7 +148,47 @@ if($_SERVER['REQUEST_METHOD'] == "POST")
         $did_validate = "N";
     }
 
+    // 2d. The photos folder exists and we can open it, a trailing slash on PHOTOS_PRINT_LOCAL_PATH is assumed
+    // The location is PHOTOS_PRINT_LOCAL_PATH/$clean_post_data['photoset_folder']
+    if (!is_dir(PHOTOS_PRINT_LOCAL_PATH.$clean_post_data['photoset_folder']) || !is_readable(PHOTOS_PRINT_LOCAL_PATH.$clean_post_data['photoset_folder'])) {
+        $has_errors['photoset_dir'] = "The <code>".$clean_post_data['photoset_folder']."</code> folder was not found in the <code>PHOTOS_PRINT_LOCAL_PATH</code> location set in <code>env.php</code>, or it was not readable.";
+        $did_validate = "N";
+    }
+    else
+    {
 
+        try {
+            foreach (new DirectoryIterator(PHOTOS_PRINT_LOCAL_PATH.$clean_post_data['photoset_folder']) as $fileInfo) {
+                // Get jpgs, pngs, gifs only
+                if (
+                    $fileInfo->isFile() &&
+                    preg_match('/\.(jpe?g|gif|png)$/i', $fileInfo->getFilename())
+                ) {
+                    $filePath = $fileInfo->getPathname();
+                    $size = @getimagesize($filePath);
+
+                    if ($size !== false) {
+                        $photos_list[] = [
+                            'filename' => $fileInfo->getFilename(),
+                            'width'    => $size[0],
+                            'height'   => $size[1],
+                        ];
+                    }
+                }
+            }
+
+        } catch (UnexpectedValueException $e) {
+            $has_errors['photoset_dir'] = "Failed to read <code>PHOTOS_PRINT_LOCAL_PATH" . $clean_post_data['photoset_folder'] . "</code>: " . htmlspecialchars($e->getMessage(), ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+            $did_validate = "N";
+        }
+    }
+
+    // 2e. We were able to build the list of photos
+    if( empty($photos_list) )
+    {
+        $has_errors['photoset_dir'] = "No photos were found in the <code>".$clean_post_data['photoset_folder']."</code> folder in the <code>PHOTOS_PRINT_LOCAL_PATH</code> location set in <code>env.php</code>.";
+        $did_validate = "N";
+    }
 
 }
 
@@ -206,7 +246,7 @@ if( !empty ( $has_errors ) )
     echo '<div class="alert alert-danger mb-4" role="alert">Please check for missing information</div>';
 }
 
-// Couldn't read the PHOTOS_SRCSET_RELATIVE_PATH folder
+// Couldn't read the PHOTOS_SRCSET_RELATIVE_PATH/$clean_post_data['photoset_folder'] folder
 if( !empty ($has_errors['photoset_dir']) )
 {
     echo '<div class="alert alert-danger mb-4" role="alert">'.$has_errors['photoset_dir'].'</div>';
