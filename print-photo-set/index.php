@@ -96,8 +96,35 @@ $photo_set_figures = [];
 $did_validate = "N"; // Default is didn't pass validation, gets set as Y if $has_errors is empty at the end of the validation process
 $has_errors = []; // If !empty, there were errors in validation
 
+/**
+ * PROCESS THE FORM SUBMISSION
+ *
+ * 1. Clean and sanitise the POST vars, add to clean_post_data
+ * 2. Validate the data (e.g. not empty, the folder location is readable), set in $has_errors or set $did_validate = "Y"
+ * 3. Build the list of photos
+ * 4. Use the list of photos to create the html tags for the required img and srcset
+ */
 
+if($_SERVER['REQUEST_METHOD'] == "POST")
+{
+    // 1. Clean and sanitise the POST vars, add to $clean_post_data
 
+    // What data is expected from POST
+    /**
+     * 'photoset_title'        string with characters that are valid for a html attribute tag or to print to the screen as-is
+     * 'photoset_intro'        string with characters that are valid for a html attribute tag or to print to the screen as-is
+     * 'photoset_folder'   string with characters that are valid for a folder name i.e. numbers, letters, underscores, hyphens - other things are stripped
+     */
+
+    // string with characters that are valid for a html attribute tag
+    // ENT_QUOTES | ENT_SUBSTITUTE "ensures quotes are safely encoded and handles invalid UTF-8 by subsituting replacement characters"
+    $clean_post_data['photoset_title'] = trim( htmlspecialchars( strip_tags( $_POST['photoset_title'] ?? '' ), ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8' ) );
+    $clean_post_data['photoset_intro'] = trim( htmlspecialchars( strip_tags( $_POST['photoset_intro'] ?? '' ), ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8' ) );
+
+    // string with characters that are valid for a folder name i.e. numbers, letters, underscores, hyphens - other things are stripped
+    $clean_post_data['photoset_folder'] = preg_replace('/[^a-zA-Z0-9_\-]/', '', $_POST['photoset_folder'] ?? '');
+
+}
 
 ?>
 <!doctype html>
