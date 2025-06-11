@@ -103,7 +103,7 @@ foreach ($requiredConstants as $const) {
 
     <hr>
 
-    <div class="col-8">
+    <div class="col-8" id="formheader">
         <h2>Copy the HTML from here</h2>    
         <p>Copy-paste form goes here</p>
     </div>
