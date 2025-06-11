@@ -98,14 +98,14 @@ $has_errors = []; // If !empty, there were errors in validation
 
 /**
  * PROCESS THE FORM SUBMISSION
- *
+ * 
  * 1. Clean and sanitise the POST vars, add to clean_post_data
  * 2. Validate the data (e.g. not empty, the folder location is readable), set in $has_errors or set $did_validate = "Y"
  * 3. Build the list of photos
  * 4. Use the list of photos to create the html tags for the required img and srcset
  */
 
-if($_SERVER['REQUEST_METHOD'] == "POST")
+if($_SERVER['REQUEST_METHOD'] == "POST") 
 {
     // 1. Clean and sanitise the POST vars, add to $clean_post_data
 
@@ -149,14 +149,14 @@ if($_SERVER['REQUEST_METHOD'] == "POST")
     }
 
     // 2d. The photos folder exists and we can open it, a trailing slash on PHOTOS_PRINT_LOCAL_PATH is assumed
-    // The location is PHOTOS_PRINT_LOCAL_PATH/$clean_post_data['photoset_folder']
+    // The location is PHOTOS_PRINT_LOCAL_PATH/$clean_post_data['photoset_folder']    
     if (!is_dir(PHOTOS_PRINT_LOCAL_PATH.$clean_post_data['photoset_folder']) || !is_readable(PHOTOS_PRINT_LOCAL_PATH.$clean_post_data['photoset_folder'])) {
         $has_errors['photoset_dir'] = "The <code>".$clean_post_data['photoset_folder']."</code> folder was not found in the <code>PHOTOS_PRINT_LOCAL_PATH</code> location set in <code>env.php</code>, or it was not readable.";
         $did_validate = "N";
     }
-    else
+    else 
     {
-
+        
         try {
             foreach (new DirectoryIterator(PHOTOS_PRINT_LOCAL_PATH.$clean_post_data['photoset_folder']) as $fileInfo) {
                 // Get jpgs, pngs, gifs only
@@ -175,7 +175,7 @@ if($_SERVER['REQUEST_METHOD'] == "POST")
                         ];
                     }
                 }
-            }
+            }   
 
         } catch (UnexpectedValueException $e) {
             $has_errors['photoset_dir'] = "Failed to read <code>PHOTOS_PRINT_LOCAL_PATH" . $clean_post_data['photoset_folder'] . "</code>: " . htmlspecialchars($e->getMessage(), ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
