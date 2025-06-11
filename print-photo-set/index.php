@@ -124,6 +124,32 @@ if($_SERVER['REQUEST_METHOD'] == "POST")
     // string with characters that are valid for a folder name i.e. numbers, letters, underscores, hyphens - other things are stripped
     $clean_post_data['photoset_folder'] = preg_replace('/[^a-zA-Z0-9_\-]/', '', $_POST['photoset_folder'] ?? '');
 
+
+    // 2. Validate the data (e.g. not empty, the folder location is readable), set in $has_errors or set $did_validate = "Y"
+
+    // 2a. Photoset title is not empty
+    if( empty( $clean_post_data['photoset_title'] ) )
+    {
+        $has_errors['photoset_title'] = "Photo set title is required.";
+        $did_validate = "N";
+    }
+
+    // 2a. Photoset intro is not empty
+    if( empty( $clean_post_data['photoset_intro'] ) )
+    {
+        $has_errors['photoset_intro'] = "Photo set brief intro is required.";
+        $did_validate = "N";
+    }
+
+    // 2c. Photoset folder variable is not empty
+    if( empty( $clean_post_data['photoset_folder'] ) )
+    {
+        $has_errors['photoset_folder'] = "Photo set folder location is required.";
+        $did_validate = "N";
+    }
+
+
+
 }
 
 ?>
@@ -169,6 +195,32 @@ if($_SERVER['REQUEST_METHOD'] == "POST")
             <p class="lead">Fill in the form and submit to generate HTML code for a set of photos.</p>
         </header>
 
+        <?php
+
+// Any messages to print?
+// Were there any errors?
+
+// Fields failed validation
+if( !empty ( $has_errors ) )
+{
+    echo '<div class="alert alert-danger mb-4" role="alert">Please check for missing information</div>';
+}
+
+// Couldn't read the PHOTOS_SRCSET_RELATIVE_PATH folder
+if( !empty ($has_errors['photoset_dir']) )
+{
+    echo '<div class="alert alert-danger mb-4" role="alert">'.$has_errors['photoset_dir'].'</div>';
+}
+
+
+
+// No errors and passed validation
+else if( $did_validate === "Y" )
+{
+    echo '<div class="alert alert-success mb-3" role="alert">See below for the preview and HTML</div>';
+}
+?>
+
     </div>
 
     <div class="col-8" id="formheader">
@@ -177,20 +229,47 @@ if($_SERVER['REQUEST_METHOD'] == "POST")
 
             <div class="mb-3">
                 <label for="photoset_title" class="form-label">Title of photo set</label>
-                <input type="text" class="form-control" id="photoset_title" name="photoset_title" aria-describedby="photoset_title_help" required maxlength="255" value="<?php echo $clean_post_data['photoset_title']; ?>">
+                <input type="text" class="form-control<?php
+				if( !empty ($has_errors['photoset_title']) ){
+					echo " is-invalid";
+				}
+				?>" id="photoset_title" name="photoset_title" aria-describedby="photoset_title_help" required maxlength="255" value="<?php echo $clean_post_data['photoset_title']; ?>">
+                <?php
+				if( !empty ($has_errors['photoset_title']) ){
+					echo '<div class="invalid-feedback">'.$has_errors['photoset_title'].'</div>';
+				}
+				?>
                 <div id="photoset_title_help" class="form-text">e.g. Switchback Great Wall Camping, 2017/10/06</div>
             </div>
 
             <div class="mb-3">
                 <label for="photoset_intro" class="form-label">Brief intro of photo set</label>
-                <textarea class="form-control" id="photoset_intro" name="photoset_intro" aria-describedby="photoset_intro_help" required><?php echo $clean_post_data['photoset_intro']; ?></textarea>
+                <textarea class="form-control<?php
+				if( !empty ($has_errors['photoset_intro']) ){
+					echo " is-invalid";
+				}
+				?>" id="photoset_intro" name="photoset_intro" aria-describedby="photoset_intro_help" required><?php echo $clean_post_data['photoset_intro']; ?></textarea>
+                <?php
+				if( !empty ($has_errors['photoset_intro']) ){
+					echo '<div class="invalid-feedback">'.$has_errors['photoset_intro'].'</div>';
+				}
+				?>
                 <div id="photoset_intro_help" class="form-text">A description of what’s in the set of photos e.g. 18 photos from a hike &hellip;</div>
             </div>
 
             <label for="photoset_folder" class="form-label">FTP folder name</label>
                 <div class="input-group mb-3 has-validation">
                 <span class="input-group-text" id="photoset_folder_tip"><?php echo PHOTOS_PUBLIC_BASE_URL; ?></span>
-                <input type="text" class="form-control" id="photoset_folder" name="photoset_folder" aria-describedby="photoset_folder_tip" required pattern="^[\d\w\-]*" title="Only letters or numbers or dashes" value="<?php echo $clean_post_data['photoset_folder']; ?>">
+                <input type="text" class="form-control<?php
+				if( !empty ($has_errors['photoset_folder']) ){
+					echo " is-invalid";
+				}
+				?>" id="photoset_folder" name="photoset_folder" aria-describedby="photoset_folder_tip" required pattern="^[\d\w\-]*" title="Only letters or numbers or dashes" value="<?php echo $clean_post_data['photoset_folder']; ?>">
+                <?php
+				if( !empty ($has_errors['photoset_folder']) ){
+					echo '<div class="invalid-feedback">'.$has_errors['photoset_folder'].'</div>';
+				}
+				?>
                 <div id="photoset_folder_help" class="form-text">The name of the folder where you uploaded the photos e.g. <samp>20171006-SwitchbackGreatWallCamping</samp></div>
             </div>
 
