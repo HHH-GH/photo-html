@@ -334,7 +334,7 @@ if($_SERVER['REQUEST_METHOD'] == "POST")
         $photo_set_figures[] = sprintf(
             $figure_template,
             PHOTOS_PUBLIC_BASE_URL.$clean_post_data['photoset_folder'].'/'.$image['filename'],
-                $image_alt.' - photo #'.$photo_set_figures_count,
+                $image_alt.'—photo #'.$photo_set_figures_count,
                 $image['width'],
                 $image['height'],
                 '' // No extra class for these
