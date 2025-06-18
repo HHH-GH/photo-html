@@ -562,9 +562,147 @@ else if( $did_validate === "Y" )
 
     <hr>
 
-    <div class="col-8" id="formheader">
-        <h2>Copy the HTML from here</h2>    
-        <p>Copy-paste form goes here</p>
+    <div class="col-10" id="formheader">
+        <h2>Copy the HTML from here</h2>
+        <?php
+        // Anything to print? (i.e. did_validate = "Y")
+        if($did_validate === 'Y')
+        {
+            // Print the form
+            ?>
+        <form id="copy-form">
+
+            <?php
+
+            // Is there a title
+            // $clean_post_data['photoset_title'] has already had htmlspecialchars applied
+            // Form field id adds "_copy" so it doesn't clash with the top form
+            if( $clean_post_data['photoset_title'] != '' ) {
+                ?>
+                <div class="mb-3">
+                    <label for="photoset_title_copy" class="form-label">Copy for the Article Title</label>
+                    <input type="text" class="form-control form-control-sm" id="photoset_title_copy" name="photoset_title_copy" value="<?php echo $clean_post_data['photoset_title'];  ?>">
+                </div>
+                <?php
+            }
+
+            // Is there a brief description
+            // $clean_post_data['photoset_intro'] has already had htmlspecialchars applied
+            // Form field id adds "_copy" so it doesn't clash with the top form
+            if( $clean_post_data['photoset_intro'] != '' ) {
+                ?>
+                <div class="mb-3">
+                    <label for="photoset_intro_copy" class="form-label">Copy for the Article in Brief</label>
+                    <textarea class="form-control form-control-sm" id="photoset_intro_copy" name="photoset_intro_copy"><?php echo $clean_post_data['photoset_intro']; ?></textarea>
+                </div>
+                <?php
+            }
+
+            // Is there a collection of figure tags?
+            if( !empty( $photo_set_figures ) ) {
+                ?>
+                <div class="mb-3">
+                    <label for="figure_tags_collection" class="form-label">Copy for the Article Body</label>
+                    <textarea class="form-control form-control-sm" id="figure_tags_collection" name="figure_tags_collection"><?php echo htmlspecialchars(implode("", $photo_set_figures), ENT_QUOTES, 'UTF-8'); ?></textarea>
+                </div>
+                <?php
+            }
+                
+
+            // Is there a featured image srcset
+            if( !empty( $img_srcset_tags_live['featured_img_srcset_tag'] != '' ) ) {
+                ?>
+                <div class="mb-3">
+                    <label for="srcset_featured" class="form-label">Srcset for Featured Image</label>
+                    <textarea class="form-control form-control-sm" id="srcset_featured" name="srcset_featured"><?php echo htmlspecialchars($img_srcset_tags_live['featured_img_srcset_tag'], ENT_QUOTES, 'UTF-8'); ?></textarea>
+                </div>
+                <?php
+            }
+
+            // Is there a list image srcset
+            if( !empty( $img_srcset_tags_live['list_img_srcset_tag'] != '' ) ) {
+                ?>
+                <div class="mb-3">
+                    <label for="srcset_list" class="form-label">Srcset for List Image</label>
+                    <textarea class="form-control form-control-sm" id="srcset_list" name="srcset_list"><?php echo htmlspecialchars($img_srcset_tags_live['list_img_srcset_tag'], ENT_QUOTES, 'UTF-8'); ?></textarea>
+                </div>
+                <?php
+            }
+
+
+            // Is there a 608px image
+            if( !empty( $img_srcset_tags_live['608_img_tag'] != '' ) ) {
+                ?>
+                <div class="mb-3">
+                    <label for="srcset_608" class="form-label">608px image</label>
+                    <textarea class="form-control form-control-sm" id="srcset_608" name="srcset_608"><?php echo htmlspecialchars($img_srcset_tags_live['608_img_tag'], ENT_QUOTES, 'UTF-8'); ?></textarea>
+                </div>
+                <?php
+            }
+
+            // Is there a 192px image
+            if( !empty( $img_srcset_tags_live['192_img_tag'] != '' ) ) {
+                ?>
+                <div class="mb-3">
+                    <label for="srcset_192" class="form-label">192px image</label>
+                    <textarea class="form-control form-control-sm" id="srcset_192" name="srcset_192"><?php echo htmlspecialchars($img_srcset_tags_live['192_img_tag'], ENT_QUOTES, 'UTF-8'); ?></textarea>
+                </div>
+                <?php
+            }
+
+            // Is there a 112px image
+            if( !empty( $img_srcset_tags_live['112_img_tag'] != '' ) ) {
+                ?>
+                <div class="mb-3">
+                    <label for="srcset_112" class="form-label">112px image</label>
+                    <textarea class="form-control form-control-sm" id="srcset_112" name="srcset_112"><?php echo htmlspecialchars($img_srcset_tags_live['112_img_tag'], ENT_QUOTES, 'UTF-8'); ?></textarea>
+                </div>
+                <?php
+            }
+
+            // Is there a 1024px image
+            if( !empty( $img_srcset_tags_live['1024_img_tag'] != '' ) ) {
+                ?>
+                <div class="mb-3">
+                    <label for="srcset_1024" class="form-label">1024px image</label>
+                    <textarea class="form-control form-control-sm" id="srcset_1024" name="srcset_1024"><?php echo htmlspecialchars($img_srcset_tags_live['1024_img_tag'], ENT_QUOTES, 'UTF-8'); ?></textarea>
+                </div>
+                <?php
+            }
+
+            // Is there a 720px image
+            if( !empty( $img_srcset_tags_live['720_img_tag'] != '' ) ) {
+                ?>
+                <div class="mb-3">
+                    <label for="srcset_720" class="form-label">720px image</label>
+                    <textarea class="form-control form-control-sm" id="srcset_720" name="srcset_720"><?php echo htmlspecialchars($img_srcset_tags_live['720_img_tag'], ENT_QUOTES, 'UTF-8'); ?></textarea>
+                </div>
+                <?php
+            }
+
+            // Is there a 320px image
+            if( !empty( $img_srcset_tags_live['320_img_tag'] != '' ) ) {
+                ?>
+                <div class="mb-3">
+                    <label for="srcset_320" class="form-label">320px image</label>
+                    <textarea class="form-control form-control-sm" id="srcset_320" name="srcset_320"><?php echo htmlspecialchars($img_srcset_tags_live['320_img_tag'], ENT_QUOTES, 'UTF-8'); ?></textarea>
+                </div>
+                <?php
+            }
+
+        ?>
+        </form>
+        <?php
+        }
+        else
+        {
+            // did_validate !== 'Y', print a message
+            ?><div class="alert alert-warning mb-3" role="alert">
+                    No HTML tags to copy-paste. (Yet?)
+                </div>
+            <?php
+        }
+        ?>
     </div>
 
     <div class="back-to-top-wrapper">
