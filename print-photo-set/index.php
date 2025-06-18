@@ -517,9 +517,47 @@ else if( $did_validate === "Y" )
 
     <hr>
 
-    <div class="col-6">
+    <div class="col-10">
         <h2>Photos preview and HTML</h2>
         <p class="lead">Preview the photos, and then copy the HTML.</p>
+
+        <?php
+            // Print the HTML tags for preview
+            // First the srcset and standalone
+            $had_srcset_tags = "N"; // Write a message if this is still N at the end of the loop
+            foreach ( $img_srcset_tags_live as $tag ) {
+                if( !empty($tag) AND $tag !== '' ) {
+                    echo '<div class="mb-3">' . $tag . "</div>\n";
+                    $had_srcset_tags = "Y";
+                }
+            }
+            
+            // Write a message if there were no HTML tags to preview
+            if( $had_srcset_tags === 'N') {
+                ?>
+                <div class="alert alert-warning mb-3" role="alert">
+                    No srcset tags to print. (Yet?)
+                </div>
+                <?php
+            }
+
+            // Second the group of figures
+            if(!empty( $photo_set_figures ))
+            {
+                echo '<div class="mb-3">'.implode("", $photo_set_figures).'</div>';
+            }
+            else
+            {
+                ?><div class="alert alert-warning mb-3" role="alert">
+                    No figure tags to print. (Yet?)
+                </div>
+                <?php
+            }
+
+        ?>
+
+
+
     </div>
 
     <hr>
