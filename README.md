@@ -49,15 +49,15 @@ Fill in a form and submit to generate HTML code for featured image, list image s
 
 ### Index page
 
-[screenshots here]
+![image](https://github.com/user-attachments/assets/b9e802e3-4157-4ad7-a613-f5230f686ca9)
 
 ### Print Photoset screenshots
 
-[screenshots here]
+![image](https://github.com/user-attachments/assets/017f62df-531d-4be8-9ba9-e2f5cbdc7f99)
 
 ### Make Srcset screenshots
 
-[screenshots here]
+![image](https://github.com/user-attachments/assets/9744e449-3d4d-4693-8275-e55cbf58d9b7)
 
 ---
 
