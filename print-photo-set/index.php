@@ -190,6 +190,18 @@ if($_SERVER['REQUEST_METHOD'] == "POST")
         $did_validate = "N";
     }
 
+    // 3. Last check - were there any errors?
+
+    if( !empty($has_errors) )
+    {
+        $did_validate = "N";
+    }
+    else
+    {
+        // Got here with no errors
+        $did_validate = "Y"; // Success
+    }
+
 }
 
 ?>
