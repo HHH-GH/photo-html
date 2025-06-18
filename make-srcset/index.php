@@ -217,7 +217,7 @@ if($_SERVER['REQUEST_METHOD'] == "POST")
      * 
      */
 
-    $image_template = '<img src="%s" alt="%s" width="%d" height="%d"%s>';
+    $image_template = '<img src="%s" width="%d" height="%d"%s alt="%s">';
     $image_alt = $clean_post_data['photoset_alt'];
     $image_alt_plus_prefix = !empty( $clean_post_data['photoset_alt_prefix'] ) ? $clean_post_data['photoset_alt_prefix'].IMG_ALT_PREFIX_SEPARATOR.$clean_post_data['photoset_alt'] : $clean_post_data['photoset_alt'];
 
@@ -230,10 +230,10 @@ if($_SERVER['REQUEST_METHOD'] == "POST")
             $img_srcset_tags_live['1024_img_tag'] = sprintf(
                 $image_template,
                 PHOTOS_PUBLIC_BASE_URL.$clean_post_data['photoset_folder'].'/'.$image['filename'],
-                $image_alt_plus_prefix,
                 $image['width'],
                 $image['height'],
-                '' // No class added
+                '', // No class added                
+                $image_alt_plus_prefix
             );
 
             // The src attribute
@@ -247,11 +247,11 @@ if($_SERVER['REQUEST_METHOD'] == "POST")
             // The standalone image
             $img_srcset_tags_live['720_img_tag'] = sprintf(
                 $image_template,
-                PHOTOS_PUBLIC_BASE_URL.$clean_post_data['photoset_folder'].'/'.$image['filename'],
-                $image_alt,
+                PHOTOS_PUBLIC_BASE_URL.$clean_post_data['photoset_folder'].'/'.$image['filename'],                
                 $image['width'],
                 $image['height'],
-                '' // No class added
+                '', // No class added
+                $image_alt
             );
 
             // The src attribute
@@ -264,11 +264,11 @@ if($_SERVER['REQUEST_METHOD'] == "POST")
             // The standalone image
             $img_srcset_tags_live['608_img_tag'] = sprintf(
                 $image_template,
-                PHOTOS_PUBLIC_BASE_URL.$clean_post_data['photoset_folder'].'/'.$image['filename'],
-                $image_alt_plus_prefix,
+                PHOTOS_PUBLIC_BASE_URL.$clean_post_data['photoset_folder'].'/'.$image['filename'],                
                 $image['width'],
                 $image['height'],
-                ' class="img"' // Class added to legacy sizes
+                ' class="img"', // Class added to legacy sizes
+                $image_alt_plus_prefix
             );
 
         }
@@ -280,10 +280,10 @@ if($_SERVER['REQUEST_METHOD'] == "POST")
             $img_srcset_tags_live['320_img_tag'] = sprintf(
                 $image_template,
                 PHOTOS_PUBLIC_BASE_URL.$clean_post_data['photoset_folder'].'/'.$image['filename'],
-                $image_alt,
                 $image['width'],
                 $image['height'],
-                '' // No class added
+                '', // No class added
+                $image_alt_plus_prefix
             );
 
             // The src attribute
@@ -296,11 +296,11 @@ if($_SERVER['REQUEST_METHOD'] == "POST")
             // The standalone image
             $img_srcset_tags_live['192_img_tag'] = sprintf(
                 $image_template,
-                PHOTOS_PUBLIC_BASE_URL.$clean_post_data['photoset_folder'].'/'.$image['filename'],
-                $image_alt,
+                PHOTOS_PUBLIC_BASE_URL.$clean_post_data['photoset_folder'].'/'.$image['filename'],                
                 $image['width'],
                 $image['height'],
-                ' class="img"' // Class added to legacy sizes
+                ' class="img"', // Class added to legacy sizes
+                $image_alt
             );
         }
 
@@ -310,11 +310,11 @@ if($_SERVER['REQUEST_METHOD'] == "POST")
             // The standalone image
             $img_srcset_tags_live['112_img_tag'] = sprintf(
                 $image_template,
-                PHOTOS_PUBLIC_BASE_URL.$clean_post_data['photoset_folder'].'/'.$image['filename'],
-                $image_alt,
+                PHOTOS_PUBLIC_BASE_URL.$clean_post_data['photoset_folder'].'/'.$image['filename'],                
                 $image['width'],
                 $image['height'],
-                ' class="img"' // Class added to legacy sizes
+                ' class="img"', // Class added to legacy sizes
+                $image_alt
             );
         }
     }
