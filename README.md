@@ -45,6 +45,22 @@ Fill in a form and submit to generate HTML code for featured image, list image s
 
 ---
 
+## What's it look like?
+
+### Index page
+
+[screenshots here]
+
+### Print Photoset screenshots
+
+[screenshots here]
+
+### Make Srcset screenshots
+
+[screenshots here]
+
+---
+
 ## Thanks to our sponsor
 
 This repo is sponsored by Muzza’s Image Warehouse.
