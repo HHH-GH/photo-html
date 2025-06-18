@@ -563,7 +563,7 @@ else if( $did_validate === "Y" )
                 ?>
                 <div class="mb-3">
                     <label for="srcset_featured" class="form-label">Srcset for Featured Image</label>
-                    <textarea class="form-control form-control-sm" id="srcset_featured" name="srcset_featured"><?php echo htmlspecialchars($img_srcset_tags_live['featured_img_srcset_tag'], ENT_QUOTES, 'UTF-8'); ?></textarea>
+                    <textarea onfocus="this.select()" onmouseup="event.preventDefault()" class="form-control form-control-sm" id="srcset_featured" name="srcset_featured"><?php echo htmlspecialchars($img_srcset_tags_live['featured_img_srcset_tag'], ENT_QUOTES, 'UTF-8'); ?></textarea>
                 </div>
                 <?php
             }
@@ -573,7 +573,7 @@ else if( $did_validate === "Y" )
                 ?>
                 <div class="mb-3">
                     <label for="srcset_list" class="form-label">Srcset for List Image</label>
-                    <textarea class="form-control form-control-sm" id="srcset_list" name="srcset_list"><?php echo htmlspecialchars($img_srcset_tags_live['list_img_srcset_tag'], ENT_QUOTES, 'UTF-8'); ?></textarea>
+                    <textarea onfocus="this.select()" onmouseup="event.preventDefault()" class="form-control form-control-sm" id="srcset_list" name="srcset_list"><?php echo htmlspecialchars($img_srcset_tags_live['list_img_srcset_tag'], ENT_QUOTES, 'UTF-8'); ?></textarea>
                 </div>
                 <?php
             }
@@ -584,7 +584,7 @@ else if( $did_validate === "Y" )
                 ?>
                 <div class="mb-3">
                     <label for="srcset_caption" class="form-label">Caption for photos</label>
-                    <input type="text" class="form-control form-control-sm" id="srcset_caption" name="srcset_caption" value="<?php echo $clean_photo_caption;  ?>">
+                    <input onfocus="this.select()" onmouseup="event.preventDefault()" type="text" class="form-control form-control-sm" id="srcset_caption" name="srcset_caption" value="<?php echo $clean_photo_caption;  ?>">
                 </div>
                 <?php
             }
@@ -594,7 +594,7 @@ else if( $did_validate === "Y" )
                 ?>
                 <div class="mb-3">
                     <label for="srcset_608" class="form-label">608px image</label>
-                    <textarea class="form-control form-control-sm" id="srcset_608" name="srcset_608"><?php echo htmlspecialchars($img_srcset_tags_live['608_img_tag'], ENT_QUOTES, 'UTF-8'); ?></textarea>
+                    <textarea onfocus="this.select()" onmouseup="event.preventDefault()" class="form-control form-control-sm" id="srcset_608" name="srcset_608"><?php echo htmlspecialchars($img_srcset_tags_live['608_img_tag'], ENT_QUOTES, 'UTF-8'); ?></textarea>
                 </div>
                 <?php
             }
@@ -604,7 +604,7 @@ else if( $did_validate === "Y" )
                 ?>
                 <div class="mb-3">
                     <label for="srcset_192" class="form-label">192px image</label>
-                    <textarea class="form-control form-control-sm" id="srcset_192" name="srcset_192"><?php echo htmlspecialchars($img_srcset_tags_live['192_img_tag'], ENT_QUOTES, 'UTF-8'); ?></textarea>
+                    <textarea onfocus="this.select()" onmouseup="event.preventDefault()" class="form-control form-control-sm" id="srcset_192" name="srcset_192"><?php echo htmlspecialchars($img_srcset_tags_live['192_img_tag'], ENT_QUOTES, 'UTF-8'); ?></textarea>
                 </div>
                 <?php
             }
@@ -614,7 +614,7 @@ else if( $did_validate === "Y" )
                 ?>
                 <div class="mb-3">
                     <label for="srcset_112" class="form-label">112px image</label>
-                    <textarea class="form-control form-control-sm" id="srcset_112" name="srcset_112"><?php echo htmlspecialchars($img_srcset_tags_live['112_img_tag'], ENT_QUOTES, 'UTF-8'); ?></textarea>
+                    <textarea onfocus="this.select()" onmouseup="event.preventDefault()" class="form-control form-control-sm" id="srcset_112" name="srcset_112"><?php echo htmlspecialchars($img_srcset_tags_live['112_img_tag'], ENT_QUOTES, 'UTF-8'); ?></textarea>
                 </div>
                 <?php
             }
@@ -624,7 +624,7 @@ else if( $did_validate === "Y" )
                 ?>
                 <div class="mb-3">
                     <label for="srcset_1024" class="form-label">1024px image</label>
-                    <textarea class="form-control form-control-sm" id="srcset_1024" name="srcset_1024"><?php echo htmlspecialchars($img_srcset_tags_live['1024_img_tag'], ENT_QUOTES, 'UTF-8'); ?></textarea>
+                    <textarea onfocus="this.select()" onmouseup="event.preventDefault()" class="form-control form-control-sm" id="srcset_1024" name="srcset_1024"><?php echo htmlspecialchars($img_srcset_tags_live['1024_img_tag'], ENT_QUOTES, 'UTF-8'); ?></textarea>
                 </div>
                 <?php
             }
@@ -634,7 +634,7 @@ else if( $did_validate === "Y" )
                 ?>
                 <div class="mb-3">
                     <label for="srcset_720" class="form-label">720px image</label>
-                    <textarea class="form-control form-control-sm" id="srcset_720" name="srcset_720"><?php echo htmlspecialchars($img_srcset_tags_live['720_img_tag'], ENT_QUOTES, 'UTF-8'); ?></textarea>
+                    <textarea onfocus="this.select()" onmouseup="event.preventDefault()" class="form-control form-control-sm" id="srcset_720" name="srcset_720"><?php echo htmlspecialchars($img_srcset_tags_live['720_img_tag'], ENT_QUOTES, 'UTF-8'); ?></textarea>
                 </div>
                 <?php
             }
@@ -644,7 +644,7 @@ else if( $did_validate === "Y" )
                 ?>
                 <div class="mb-3">
                     <label for="srcset_320" class="form-label">320px image</label>
-                    <textarea class="form-control form-control-sm" id="srcset_320" name="srcset_320"><?php echo htmlspecialchars($img_srcset_tags_live['320_img_tag'], ENT_QUOTES, 'UTF-8'); ?></textarea>
+                    <textarea onfocus="this.select()" onmouseup="event.preventDefault()" class="form-control form-control-sm" id="srcset_320" name="srcset_320"><?php echo htmlspecialchars($img_srcset_tags_live['320_img_tag'], ENT_QUOTES, 'UTF-8'); ?></textarea>
                 </div>
                 <?php
             }
@@ -654,7 +654,7 @@ else if( $did_validate === "Y" )
             ?>
             <div class="mb-3">
                 <label for="srcset_figure_img" class="form-label">The 720 figure</label>
-                <textarea class="form-control form-control-sm" id="srcset_figure_img" name="srcset_figure_img"><?php echo htmlspecialchars($img_srcset_tags_live['figure_img_tag'], ENT_QUOTES, 'UTF-8'); ?></textarea>
+                <textarea onfocus="this.select()" onmouseup="event.preventDefault()" class="form-control form-control-sm" id="srcset_figure_img" name="srcset_figure_img"><?php echo htmlspecialchars($img_srcset_tags_live['figure_img_tag'], ENT_QUOTES, 'UTF-8'); ?></textarea>
             </div>
             <?php
             }
