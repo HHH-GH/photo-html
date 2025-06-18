@@ -608,28 +608,6 @@ else if( $did_validate === "Y" )
                 <?php
             }
                 
-
-            // Is there a featured image srcset
-            if( !empty( $img_srcset_tags_live['featured_img_srcset_tag'] != '' ) ) {
-                ?>
-                <div class="mb-3">
-                    <label for="srcset_featured" class="form-label">Srcset for Featured Image</label>
-                    <textarea onfocus="this.select()" onmouseup="event.preventDefault()" class="form-control form-control-sm" id="srcset_featured" name="srcset_featured"><?php echo htmlspecialchars($img_srcset_tags_live['featured_img_srcset_tag'], ENT_QUOTES, 'UTF-8'); ?></textarea>
-                </div>
-                <?php
-            }
-
-            // Is there a list image srcset
-            if( !empty( $img_srcset_tags_live['list_img_srcset_tag'] != '' ) ) {
-                ?>
-                <div class="mb-3">
-                    <label for="srcset_list" class="form-label">Srcset for List Image</label>
-                    <textarea onfocus="this.select()" onmouseup="event.preventDefault()" class="form-control form-control-sm" id="srcset_list" name="srcset_list"><?php echo htmlspecialchars($img_srcset_tags_live['list_img_srcset_tag'], ENT_QUOTES, 'UTF-8'); ?></textarea>
-                </div>
-                <?php
-            }
-
-
             // Is there a 608px image
             if( !empty( $img_srcset_tags_live['608_img_tag'] != '' ) ) {
                 ?>
@@ -686,6 +664,26 @@ else if( $did_validate === "Y" )
                 <div class="mb-3">
                     <label for="srcset_320" class="form-label">320px image</label>
                     <textarea onfocus="this.select()" onmouseup="event.preventDefault()" class="form-control form-control-sm" id="srcset_320" name="srcset_320"><?php echo htmlspecialchars($img_srcset_tags_live['320_img_tag'], ENT_QUOTES, 'UTF-8'); ?></textarea>
+                </div>
+                <?php
+            }
+
+            // Is there a featured image srcset
+            if( !empty( $img_srcset_tags_live['featured_img_srcset_tag'] != '' ) ) {
+                ?>
+                <div class="mb-3">
+                    <label for="srcset_featured" class="form-label">Srcset for Featured Image</label>
+                    <textarea onfocus="this.select()" onmouseup="event.preventDefault()" class="form-control form-control-sm" id="srcset_featured" name="srcset_featured"><?php echo htmlspecialchars($img_srcset_tags_live['featured_img_srcset_tag'], ENT_QUOTES, 'UTF-8'); ?></textarea>
+                </div>
+                <?php
+            }
+
+            // Is there a list image srcset
+            if( !empty( $img_srcset_tags_live['list_img_srcset_tag'] != '' ) ) {
+                ?>
+                <div class="mb-3">
+                    <label for="srcset_list" class="form-label">Srcset for List Image</label>
+                    <textarea onfocus="this.select()" onmouseup="event.preventDefault()" class="form-control form-control-sm" id="srcset_list" name="srcset_list"><?php echo htmlspecialchars($img_srcset_tags_live['list_img_srcset_tag'], ENT_QUOTES, 'UTF-8'); ?></textarea>
                 </div>
                 <?php
             }
