@@ -5,7 +5,9 @@ Scripts that take a folder of images and produce HTML code to copy-paste into ou
 Public repo for example only, make your own version using this code, whatever.
 
 ### Set up
-- Save `env.php.sample` as `env.php` and define the contants to suit your server setup.
+- Save `env.php.sample` as `env.php` and define the constants to suit your server setup.
+
+---
 
 ### Print Photo Set
 
@@ -16,6 +18,8 @@ Fill in the form and submit to generate HTML code for a set of photos - will gen
 - The same files also need to be available to read in their folder in the `PHOTOS_PRINT_LOCAL_PATH` set in `env.php`
 - Fill form, submit
 - Copy the generated image tags into the CMS fields
+
+---
 
 ### Make Srcset
 
@@ -38,6 +42,8 @@ Fill in a form and submit to generate HTML code for featured image, list image s
 - BASENAME_608x344.jpg
 - BASENAME_720x405.jpg
 - BASENAME_1024x576.jpg
+
+---
 
 ## Thanks to our sponsor
 
