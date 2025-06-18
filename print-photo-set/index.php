@@ -102,7 +102,7 @@ $has_errors = []; // If !empty, there were errors in validation
  * 1. Clean and sanitise the POST vars, add to clean_post_data
  * 2. Validate the data (e.g. not empty, the folder location is readable), set in $has_errors or set $did_validate = "Y"
  * 3. Build the list of photos
- * 4. Use the list of photos to create the html tags for the required img and srcset
+ * 4. Use the list of photos to create the html tags for the required img and srcset and collection of figure tags
  */
 
 if($_SERVER['REQUEST_METHOD'] == "POST") 
@@ -201,6 +201,145 @@ if($_SERVER['REQUEST_METHOD'] == "POST")
         // Got here with no errors
         $did_validate = "Y"; // Success
     }
+
+
+    // 4. Use the list of photos to create the html tags for the required img and srcset and collection of figure tags
+
+    /**
+     * What do we want?
+     * A standalone image tag for each of the allowed sizes, with `class="img"` added for legacy images
+     * - linking to the location in `PHOTOS_PUBLIC_BASE_URL/$clean_post_data['photoset_folder']/`
+     * - with width, height, and an alt tag made out of $clean_post_data['photoset_alt'] (and $clean_post_data['photoset_alt_prefix'], if present)
+     * The src attribute for the 1024 and 720 and 320px sizes, linking to the location in `PHOTOS_PUBLIC_BASE_URL/$clean_post_data['photoset_folder']/`
+     * to use in a srcset
+     * For all the images without the _1024x576 etc suffixes, create a figure tag with a plain image inside and add to $photo_set_figures array;
+     *
+     */
+
+    $image_template = '<img src="%s" alt="%s" width="%d" height="%d"%s>';
+    $figure_template = "<figure>\n\t".$image_template."\n</figure>";
+    $image_alt = $clean_post_data['photoset_title'];
+
+    foreach( $photos_list as $image )
+    {
+        // 1024 image
+        if( strpos( $image['filename'], '_1024x576' ) !== FALSE )
+        {
+            // The standalone image
+            $img_srcset_tags_live['1024_img_tag'] = sprintf(
+                $image_template,
+                PHOTOS_PUBLIC_BASE_URL.$clean_post_data['photoset_folder'].'/'.$image['filename'],
+                $image_alt,
+                $image['width'],
+                $image['height'],
+                '' // No class added
+            );
+
+            // The src attribute
+            $img_srcset_tag_srcs['1024_src'] = PHOTOS_PUBLIC_BASE_URL.$clean_post_data['photoset_folder'].'/'.$image['filename'];
+
+            continue; // Skip to the next $image in the array, don't process other code in this iteration of the loop
+
+        }
+
+        // 720 image
+        if( strpos( $image['filename'], '_720x405' ) !== FALSE )
+        {
+            // The standalone image
+            $img_srcset_tags_live['720_img_tag'] = sprintf(
+                $image_template,
+                PHOTOS_PUBLIC_BASE_URL.$clean_post_data['photoset_folder'].'/'.$image['filename'],
+                $image_alt,
+                $image['width'],
+                $image['height'],
+                '' // No class added
+            );
+
+            // The src attribute
+            $img_srcset_tag_srcs['720_src'] = PHOTOS_PUBLIC_BASE_URL.$clean_post_data['photoset_folder'].'/'.$image['filename'];
+
+            continue; // Skip to the next $image in the array, don't process other code in this iteration of the loop
+        }
+
+        // 608 image
+        if( strpos( $image['filename'], '_608x344' ) !== FALSE )
+        {
+            // The standalone image
+            $img_srcset_tags_live['608_img_tag'] = sprintf(
+                $image_template,
+                PHOTOS_PUBLIC_BASE_URL.$clean_post_data['photoset_folder'].'/'.$image['filename'],
+                $image_alt,
+                $image['width'],
+                $image['height'],
+                ' class="img"' // Class added to legacy sizes
+            );
+
+            continue; // Skip to the next $image in the array, don't process other code in this iteration of the loop
+        }
+
+        // 320 image
+        if( strpos( $image['filename'], '_320x215' ) !== FALSE )
+        {
+            // The standalone image
+            $img_srcset_tags_live['320_img_tag'] = sprintf(
+                $image_template,
+                PHOTOS_PUBLIC_BASE_URL.$clean_post_data['photoset_folder'].'/'.$image['filename'],
+                $image_alt,
+                $image['width'],
+                $image['height'],
+                '' // No class added
+            );
+
+            // The src attribute
+            $img_srcset_tag_srcs['320_src'] = PHOTOS_PUBLIC_BASE_URL.$clean_post_data['photoset_folder'].'/'.$image['filename'];
+
+            continue; // Skip to the next $image in the array, don't process other code in this iteration of the loop
+        }
+
+        // 192 image
+        if( strpos( $image['filename'], '_192x128' ) !== FALSE )
+        {
+            // The standalone image
+            $img_srcset_tags_live['192_img_tag'] = sprintf(
+                $image_template,
+                PHOTOS_PUBLIC_BASE_URL.$clean_post_data['photoset_folder'].'/'.$image['filename'],
+                $image_alt,
+                $image['width'],
+                $image['height'],
+                ' class="img"' // Class added to legacy sizes
+            );
+
+            continue; // Skip to the next $image in the array, don't process other code in this iteration of the loop
+        }
+
+        // 112 image
+        if( strpos( $image['filename'], '_112x112' ) !== FALSE )
+        {
+            // The standalone image
+            $img_srcset_tags_live['112_img_tag'] = sprintf(
+                $image_template,
+                PHOTOS_PUBLIC_BASE_URL.$clean_post_data['photoset_folder'].'/'.$image['filename'],
+                $image_alt,
+                $image['width'],
+                $image['height'],
+                ' class="img"' // Class added to legacy sizes
+            );
+
+            continue; // Skip to the next $image in the array, don't process other code in this iteration of the loop
+        }
+
+        // It's an image without a suffix, add it to the collection of figures
+        // only gets here if the image doesn't have one of the above suffixes
+        $photo_set_figures[] = sprintf(
+            $figure_template,
+            PHOTOS_PUBLIC_BASE_URL.$clean_post_data['photoset_folder'].'/'.$image['filename'],
+                $image_alt,
+                $image['width'],
+                $image['height'],
+                '' // No extra class for these
+        );
+    }
+
 
 }
 
