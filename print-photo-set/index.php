@@ -205,7 +205,7 @@ if($_SERVER['REQUEST_METHOD'] == "POST")
 
     // 4. Use the list of photos to create the html tags for the required img and srcset and collection of figure tags
 
-    /**
+    /**  
      * What do we want?
      * A standalone image tag for each of the allowed sizes, with `class="img"` added for legacy images
      * - linking to the location in `PHOTOS_PUBLIC_BASE_URL/$clean_post_data['photoset_folder']/`
@@ -213,14 +213,15 @@ if($_SERVER['REQUEST_METHOD'] == "POST")
      * The src attribute for the 1024 and 720 and 320px sizes, linking to the location in `PHOTOS_PUBLIC_BASE_URL/$clean_post_data['photoset_folder']/`
      * to use in a srcset
      * For all the images without the _1024x576 etc suffixes, create a figure tag with a plain image inside and add to $photo_set_figures array;
-     *
+     * 
      */
 
     $image_template = '<img src="%s" alt="%s" width="%d" height="%d"%s>';
-    $figure_template = "<figure>\n\t".$image_template."\n</figure>";
+    $figure_template = "<figure>\n\t".$image_template."\n</figure>\n\n";
     $image_alt = $clean_post_data['photoset_title'];
+    $photo_set_figures_count = 1;
 
-    foreach( $photos_list as $image )
+    foreach( $photos_list as $image ) 
     {
         // 1024 image
         if( strpos( $image['filename'], '_1024x576' ) !== FALSE )
@@ -239,7 +240,7 @@ if($_SERVER['REQUEST_METHOD'] == "POST")
             $img_srcset_tag_srcs['1024_src'] = PHOTOS_PUBLIC_BASE_URL.$clean_post_data['photoset_folder'].'/'.$image['filename'];
 
             continue; // Skip to the next $image in the array, don't process other code in this iteration of the loop
-
+            
         }
 
         // 720 image
@@ -333,14 +334,58 @@ if($_SERVER['REQUEST_METHOD'] == "POST")
         $photo_set_figures[] = sprintf(
             $figure_template,
             PHOTOS_PUBLIC_BASE_URL.$clean_post_data['photoset_folder'].'/'.$image['filename'],
-                $image_alt,
+                $image_alt.' - photo #'.$photo_set_figures_count,
                 $image['width'],
                 $image['height'],
                 '' // No extra class for these
         );
+        $photo_set_figures_count++; // Increment the count of figures
     }
 
+    // Can we make up any of the srcset images?
+    // Featured image srcset
+    // - needs 1024, 720, 320 images
+    // - defaults to showing the largest image in src
+    // - 1024x576 aspect ratio set
+    // - sizes="100vw" so the browser picks the largest one that fits the screensize at page load
+    $featured_image_srcset_template = '<img src="%s" width="1024" height="576" srcset="%s 1024w, %s 720w, %s 320w" sizes="100w" alt="%s">';
+    if(
+        !empty( $img_srcset_tag_srcs['1024_src'] )
+        AND !empty( $img_srcset_tag_srcs['720_src'] )
+        AND !empty( $img_srcset_tag_srcs['320_src'] )
+    )
+    {
+        $img_srcset_tags_live['featured_img_srcset_tag'] = sprintf(
+            $featured_image_srcset_template,
+            $img_srcset_tag_srcs['1024_src'],
+            $img_srcset_tag_srcs['1024_src'],
+            $img_srcset_tag_srcs['720_src'],
+            $img_srcset_tag_srcs['320_src'],
+            $image_alt
+        );
+    }
 
+    // List image srcset
+    // - needs 720, 320 images
+    // - defaults to showing the 320 image in src (assuming thumbnail in list page view, large screen)
+    // - 320x215 aspect ratio set
+    // - sizes: 592px is where the list page view changes to a card with the image at the top, use the 720px image but shrink to fit 592px or lower
+    $list_image_srcset_template = '<img src="%s" width="320" height="215" srcset="%s 720w, %s 320w" sizes="(min-width: 592px) 320px, 100vw" alt="%s">';
+    if(
+        !empty( $img_srcset_tag_srcs['720_src'] )
+        AND !empty( $img_srcset_tag_srcs['320_src'] )
+    )
+    {
+        $img_srcset_tags_live['list_img_srcset_tag'] = sprintf(
+            $list_image_srcset_template,
+            $img_srcset_tag_srcs['320_src'],
+            $img_srcset_tag_srcs['720_src'],
+            $img_srcset_tag_srcs['320_src'],
+            $image_alt
+        );
+    }
+
+    
 }
 
 ?>
