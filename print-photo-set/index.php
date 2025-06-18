@@ -459,7 +459,7 @@ else if( $did_validate === "Y" )
 
     </div>
 
-    <div class="col-8" id="formheader">
+    <div class="col-8">
         
         <form action="./index.php" method="post">
 
