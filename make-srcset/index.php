@@ -326,7 +326,7 @@ if($_SERVER['REQUEST_METHOD'] == "POST")
     // - defaults to showing the largest image in src
     // - 1024x576 aspect ratio set
     // - sizes="100vw" so the browser picks the largest one that fits the screensize at page load
-    $featured_image_srcset_template = '<img src="%s" width="1024" height="576" srcset="%s 1024w, %s 720w, %s 320w" sizes="100w" alt="%s">';
+    $featured_image_srcset_template = '<img src="%s" width="1024" height="576" srcset="%s 1024w, %s 720w, %s 320w" sizes="100vw" alt="%s">';
     if(
         !empty( $img_srcset_tag_srcs['1024_src'] )
         AND !empty( $img_srcset_tag_srcs['720_src'] )
