@@ -428,12 +428,12 @@ if($_SERVER['REQUEST_METHOD'] == "POST")
         );
     }
 
-    // List image srcset
+    // List image picture with srcset
     // - needs 720, 320 images
     // - defaults to showing the 320 image in src (assuming thumbnail in list page view, large screen)
     // - 320x215 aspect ratio set
     // - sizes: 592px is where the list page view changes to a card with the image at the top, use the 720px image but shrink to fit 592px or lower
-    $list_image_srcset_template = '<img src="%s" width="320" height="215" srcset="%s 720w, %s 320w" sizes="(min-width: 592px) 320px, 100vw" alt="%s">';
+    $list_image_srcset_template = '<picture><source srcset="%s" media="(width >= 592px)"><source srcset="%s" media="(width >= 344px)"><img src="%s" width="320" height="215" alt="%s"></picture>';
     if(
         !empty( $img_srcset_tag_srcs['720_src'] )
         AND !empty( $img_srcset_tag_srcs['320_src'] )
