@@ -24,38 +24,40 @@ foreach ($requiredConstants as $const) {
 
 /**
  * THE PROGRAM
- * 
+ *
  * Form submission provides these vars in $_POST
  * 1. Photo set title 'photoset_title' e.g. "Gubeikou Great Wall, 2025/06/07"
- * 2. Photo set brief intro 'photoset_intro' e.g. "18 photos from a hike at the Gubeikou Great Wall 
+ * 2. Photo set brief intro 'photoset_intro' e.g. "18 photos from a hike at the Gubeikou Great Wall
  * 3. Online folder location 'photoset_folder' e.g. it's location at PHOTOS_PUBLIC_BASE_URL, like PHOTOS_PUBLIC_BASE_URL/[foldername]
- * 
+ *
  * Validate and clean those variables and add to array $clean_post_data
  * - $clean_post_data["photoset_title"], text that is okay to use in an html attribute or print to the screen, no exploits
  * - $clean_post_data["photoset_intro"], text that is okay to use in an html attribute or print to the screen, no exploits
  * - $clean_post_data["photoset_folder"], a valid folder name, no exploits
- * 
+ *
  * Create srcsets and standalone image tags according to BUSINESS LOGIC
  * - Read the files in PHOTOS_SRCSET_RELATIVE_PATH/[foldername] and generate HTML img/srcset tags according to BUSINESS LOGIC
  * - Write the img/srcset tags to the page for preview
  * - Print each img/srcset tag in a textarea for copy-paste
- * 
+ *
  * What tags are created out of which files?
- * - For the featured image srcset we expect three files suffixed as follows
+ * - For the featured image srcset we expect three files suffixed as follows, and we'll add 1200x675 and 1600x900 if available
  *   - _1024x576.jpg
  *   - _720x405.jpg
  *   - _320x215.jpg
- * - For the list image srcset we expect two files suffixed as follows
+ * - For the list image picture tag we expect two files suffixed as follows
  *   - _720x405.jpg
  *   - _320x215.jpg
  * - Individual individual image tags are generated for each of these sizes that are present
+ *   - _1600x900.jpg
+ *   - _1200x675.jpg
  *   - _1024x576.jpg
  *   - _720x405.jpg
  *   - _608x344.jpg
  *   - _320x215.jpg
  *   - _192x128.jpg
  *   - _112x112.jpg
- * - And then all the JPG/PNG/GIF files that are not suffixed as above are turned into a group of figures with image tags 
+ * - And then all the JPG/PNG/GIF files that are not suffixed as above are turned into a group of figures with image tags
  */
 
 // Set up some variables
@@ -72,15 +74,19 @@ $img_srcset_tags_live = [
     'featured_img_srcset_tag' => '',
     'list_img_srcset_tag' => '',
     'figure_img_tag' => '',
+    '1600_img_tag' => '',
+    '1200_img_tag' => '',
     '1024_img_tag' => '',
     '720_img_tag' => '',
     '608_img_tag' => '',
     '320_img_tag' => '',
     '192_img_tag' => '',
-    '112_img_tag' => '',    
+    '112_img_tag' => '',
 ];
 
 $img_srcset_tag_srcs = [
+    '1600_src' => '',
+    '1200_src' => '',
     '1024_src' => '',
     '720_src' => '',
     '320_src' => '',
@@ -98,14 +104,14 @@ $has_errors = []; // If !empty, there were errors in validation
 
 /**
  * PROCESS THE FORM SUBMISSION
- * 
+ *
  * 1. Clean and sanitise the POST vars, add to clean_post_data
  * 2. Validate the data (e.g. not empty, the folder location is readable), set in $has_errors or set $did_validate = "Y"
  * 3. Build the list of photos
  * 4. Use the list of photos to create the html tags for the required img and srcset and collection of figure tags
  */
 
-if($_SERVER['REQUEST_METHOD'] == "POST") 
+if($_SERVER['REQUEST_METHOD'] == "POST")
 {
     // 1. Clean and sanitise the POST vars, add to $clean_post_data
 
@@ -149,14 +155,14 @@ if($_SERVER['REQUEST_METHOD'] == "POST")
     }
 
     // 2d. The photos folder exists and we can open it, a trailing slash on PHOTOS_PRINT_LOCAL_PATH is assumed
-    // The location is PHOTOS_PRINT_LOCAL_PATH/$clean_post_data['photoset_folder']    
+    // The location is PHOTOS_PRINT_LOCAL_PATH/$clean_post_data['photoset_folder']
     if (!is_dir(PHOTOS_PRINT_LOCAL_PATH.$clean_post_data['photoset_folder']) || !is_readable(PHOTOS_PRINT_LOCAL_PATH.$clean_post_data['photoset_folder'])) {
         $has_errors['photoset_dir'] = "The <code>".$clean_post_data['photoset_folder']."</code> folder was not found in the <code>PHOTOS_PRINT_LOCAL_PATH</code> location set in <code>env.php</code>, or it was not readable.";
         $did_validate = "N";
     }
-    else 
+    else
     {
-        
+
         try {
             foreach (new DirectoryIterator(PHOTOS_PRINT_LOCAL_PATH.$clean_post_data['photoset_folder']) as $fileInfo) {
                 // Get jpgs, pngs, gifs only
@@ -175,7 +181,7 @@ if($_SERVER['REQUEST_METHOD'] == "POST")
                         ];
                     }
                 }
-            }   
+            }
 
         } catch (UnexpectedValueException $e) {
             $has_errors['photoset_dir'] = "Failed to read <code>PHOTOS_PRINT_LOCAL_PATH" . $clean_post_data['photoset_folder'] . "</code>: " . htmlspecialchars($e->getMessage(), ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
@@ -205,7 +211,7 @@ if($_SERVER['REQUEST_METHOD'] == "POST")
 
     // 4. Use the list of photos to create the html tags for the required img and srcset and collection of figure tags
 
-    /**  
+    /**
      * What do we want?
      * A standalone image tag for each of the allowed sizes, with `class="img"` added for legacy images
      * - linking to the location in `PHOTOS_PUBLIC_BASE_URL/$clean_post_data['photoset_folder']/`
@@ -213,7 +219,7 @@ if($_SERVER['REQUEST_METHOD'] == "POST")
      * The src attribute for the 1024 and 720 and 320px sizes, linking to the location in `PHOTOS_PUBLIC_BASE_URL/$clean_post_data['photoset_folder']/`
      * to use in a srcset
      * For all the images without the _1024x576 etc suffixes, create a figure tag with a plain image inside and add to $photo_set_figures array;
-     * 
+     *
      */
 
     $image_template = '<img src="%s" alt="%s" width="%d" height="%d"%s>';
@@ -221,8 +227,48 @@ if($_SERVER['REQUEST_METHOD'] == "POST")
     $image_alt = $clean_post_data['photoset_title'];
     $photo_set_figures_count = 1;
 
-    foreach( $photos_list as $image ) 
+    foreach( $photos_list as $image )
     {
+
+        // 1600 image
+        if( strpos( $image['filename'], '_1600x900' ) !== FALSE )
+        {
+            // The standalone image
+            $img_srcset_tags_live['1600_img_tag'] = sprintf(
+                $image_template,
+                PHOTOS_PUBLIC_BASE_URL.$clean_post_data['photoset_folder'].'/'.$image['filename'],
+                $image_alt,
+                $image['width'],
+                $image['height'],
+                '' // No class added
+            );
+
+            // The src attribute
+            $img_srcset_tag_srcs['1600_src'] = PHOTOS_PUBLIC_BASE_URL.$clean_post_data['photoset_folder'].'/'.$image['filename'];
+
+            continue; // Skip to the next $image in the array, don't process other code in this iteration of the loop
+        }
+
+        // 1200 image
+        if( strpos( $image['filename'], '_1200x675' ) !== FALSE )
+        {
+            // The standalone image
+            $img_srcset_tags_live['1200_img_tag'] = sprintf(
+                $image_template,
+                PHOTOS_PUBLIC_BASE_URL.$clean_post_data['photoset_folder'].'/'.$image['filename'],
+                $image_alt,
+                $image['width'],
+                $image['height'],
+                '' // No class added
+            );
+
+            // The src attribute
+            $img_srcset_tag_srcs['1200_src'] = PHOTOS_PUBLIC_BASE_URL.$clean_post_data['photoset_folder'].'/'.$image['filename'];
+
+            continue; // Skip to the next $image in the array, don't process other code in this iteration of the loop
+
+        }
+
         // 1024 image
         if( strpos( $image['filename'], '_1024x576' ) !== FALSE )
         {
@@ -240,7 +286,7 @@ if($_SERVER['REQUEST_METHOD'] == "POST")
             $img_srcset_tag_srcs['1024_src'] = PHOTOS_PUBLIC_BASE_URL.$clean_post_data['photoset_folder'].'/'.$image['filename'];
 
             continue; // Skip to the next $image in the array, don't process other code in this iteration of the loop
-            
+
         }
 
         // 720 image
@@ -345,19 +391,36 @@ if($_SERVER['REQUEST_METHOD'] == "POST")
     // Can we make up any of the srcset images?
     // Featured image srcset
     // - needs 1024, 720, 320 images
+    // - include 1600 and 1200 images if available
     // - defaults to showing the largest image in src
     // - 1024x576 aspect ratio set
     // - sizes="100vw" so the browser picks the largest one that fits the screensize at page load
-    $featured_image_srcset_template = '<img src="%s" width="1024" height="576" srcset="%s 1024w, %s 720w, %s 320w" sizes="100vw" alt="%s">';
+    $featured_image_srcset_template = '<img src="%s" width="1024" height="576" srcset="%s%s 1024w, %s 720w, %s 320w" sizes="100vw" alt="%s">';
     if(
         !empty( $img_srcset_tag_srcs['1024_src'] )
         AND !empty( $img_srcset_tag_srcs['720_src'] )
         AND !empty( $img_srcset_tag_srcs['320_src'] )
     )
     {
+
+        // Are there larger images?
+        $img_srcset_tag_extra_img = '';
+        // 1600?
+        if( !empty( $img_srcset_tag_srcs['1600_src'] ) )
+        {
+            $img_srcset_tag_extra_img .= $img_srcset_tag_srcs['1600_src'].' 1600w, ';
+        }
+        // 1200?
+        if( !empty( $img_srcset_tag_srcs['1200_src'] ) )
+        {
+            $img_srcset_tag_extra_img .= $img_srcset_tag_srcs['1200_src'].' 1200w, ';
+        }
+
+        // Put together the tag
         $img_srcset_tags_live['featured_img_srcset_tag'] = sprintf(
             $featured_image_srcset_template,
             $img_srcset_tag_srcs['1024_src'],
+            $img_srcset_tag_extra_img,
             $img_srcset_tag_srcs['1024_src'],
             $img_srcset_tag_srcs['720_src'],
             $img_srcset_tag_srcs['320_src'],
@@ -385,7 +448,7 @@ if($_SERVER['REQUEST_METHOD'] == "POST")
         );
     }
 
-    
+
 }
 
 ?>
@@ -423,7 +486,7 @@ if($_SERVER['REQUEST_METHOD'] == "POST")
 </nav>
 
 <main class="container container-xl">
-    
+
     <div class="col-8">
 
         <header class="page-header my-5">
@@ -460,7 +523,7 @@ else if( $did_validate === "Y" )
     </div>
 
     <div class="col-8">
-        
+
         <form action="./index.php" method="post">
 
             <div class="mb-3">
@@ -531,7 +594,7 @@ else if( $did_validate === "Y" )
                     $had_srcset_tags = "Y";
                 }
             }
-            
+
             // Write a message if there were no HTML tags to preview
             if( $had_srcset_tags === 'N') {
                 ?>
@@ -607,7 +670,7 @@ else if( $did_validate === "Y" )
                 </div>
                 <?php
             }
-                
+
             // Is there a 608px image
             if( !empty( $img_srcset_tags_live['608_img_tag'] != '' ) ) {
                 ?>
@@ -709,7 +772,7 @@ else if( $did_validate === "Y" )
             <a href="#top" class="back-to-top-link btn btn-link text-nowrap" aria-label="Scroll to Top">Back to top</a><br>
         </div>
     </div>
-    
+
 </main>
 
 </body>
