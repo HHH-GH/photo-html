@@ -373,6 +373,7 @@ if($_SERVER['REQUEST_METHOD'] == "POST")
         }
     }
 
+
     // What's the largest available image? Put it in the src and use its dimensions in the width and height in the img tag
     // 1024 is always required; 1200 and 1600 are optional
 
