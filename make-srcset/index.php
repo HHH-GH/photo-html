@@ -373,6 +373,30 @@ if($_SERVER['REQUEST_METHOD'] == "POST")
         }
     }
 
+    // What's the largest available image? Put it in the src and use its dimensions in the width and height in the img tag
+    // 1024 is always required; 1200 and 1600 are optional
+
+    // Default
+    $featured_image_src = $img_srcset_tag_srcs['1024_src'];
+    $featured_image_width = 1024;
+    $featured_image_height = 576;
+
+    // Overwrite with 1200 if available
+    if( !empty( $img_srcset_tag_srcs['1200_src'] ) )
+    {
+        $featured_image_src = $img_srcset_tag_srcs['1200_src'];
+        $featured_image_width = 1200;
+        $featured_image_height = 675;
+    }
+
+    // Overwrite with 1600 if available
+    if( !empty( $img_srcset_tag_srcs['1600_src'] ) )
+    {
+        $featured_image_src = $img_srcset_tag_srcs['1600_src'];
+        $featured_image_width = 1600;
+        $featured_image_height = 900;
+    }
+
 
     // Can we make up any of the srcset images?
     // Featured image srcset
@@ -381,7 +405,7 @@ if($_SERVER['REQUEST_METHOD'] == "POST")
     // - defaults to showing the largest image in src
     // - 1024x576 aspect ratio set
     // - sizes="100vw" so the browser picks the largest one that fits the screensize at page load
-    $featured_image_srcset_template = '<img src="%s" width="1024" height="576" srcset="%s%s 1024w, %s 720w, %s 320w" sizes="100vw" alt="%s">';
+    $featured_image_srcset_template = '<img src="%s" width="%d" height="%d" srcset="%s%s 1024w, %s 720w, %s 320w" sizes="100vw" alt="%s">';
     if(
         !empty( $img_srcset_tag_srcs['1024_src'] )
         AND !empty( $img_srcset_tag_srcs['720_src'] )
@@ -405,7 +429,9 @@ if($_SERVER['REQUEST_METHOD'] == "POST")
         // Put together the tag
         $img_srcset_tags_live['featured_img_srcset_tag'] = sprintf(
             $featured_image_srcset_template,
-            $img_srcset_tag_srcs['1024_src'],
+            $featured_image_src,
+            $featured_image_width,
+            $featured_image_height,
             $img_srcset_tag_extra_img,
             $img_srcset_tag_srcs['1024_src'],
             $img_srcset_tag_srcs['720_src'],
